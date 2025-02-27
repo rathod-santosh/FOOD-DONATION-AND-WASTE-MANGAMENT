@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Dashboard</title>
+    <link rel="stylesheet" href="/css/ngoDashboard.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <h2>Welcome, <%= user.username %> ✅</h2>
+        <p><strong>Email:</strong> <%= user.email %></p>
+        <p><strong>Role:</strong> <%= user.role %></p>
+
+        <div class="notifications-container">
+            <h3>📢 Notifications</h3>
+            <div class="notifications">
+                <p>Loading notifications...</p>
+            </div>
+        </div>
+
+        <h3>Accepted Donations 📦</h3>
+
+        <% if (donations.length > 0) { %>
+            <table class="donations-table">
+                <thead>
+                    <tr>
+                        <th>Food Name</th>
+                        <th>Quantity</th>
+                        <th>Category</th>
+                        <th>District</th>
+                        <th>Date</th>
+                        <th>Delivery Method</th>
+                        <th>Pickup Location</th>
+                        <th>Drop Location</th>
+                        <th>Delivery Charge</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% donations.forEach(donation => { %>
+                        <tr>
+                            <td><%= donation.foodname %></td>
+                            <td><%= donation.quantity %></td>
+                            <td><%= donation.category %></td>
+                            <td><%= donation.district %></td>
+                            <td><%= new Date(donation.createdAt).toLocaleDateString() %></td>
+                            <td>
+                                <form class="update-form" data-id="<%= donation._id %>">
+                                    <select name="deliveryMethod" class="delivery-method" data-id="<%= donation._id %>">
+                                        <option value="self_pickup" <%= donation.deliveryMethod === 'self_pickup' ? 'selected' : '' %>>Self Pickup</option>
+                                        <option value="assigned_delivery" <%= donation.deliveryMethod === 'assigned_delivery' ? 'selected' : '' %>>Assigned Delivery</option>
+                                    </select>
+                                    <input type="text" name="pickupLocation" class="pickup-location" data-id="<%= donation._id %>"
+                                        placeholder="Enter Pickup Location" value="<%= donation.pickupLocation || '' %>" 
+                                        style="display: <%= donation.deliveryMethod === 'assigned_delivery' ? 'block' : 'none' %>;">
+                                    
+                                    <input type="text" name="dropLocation" class="drop-location" data-id="<%= donation._id %>"
+                                        placeholder="Enter Drop Location" value="<%= donation.dropLocation || '' %>" 
+                                        style="display: <%= donation.deliveryMethod === 'assigned_delivery' ? 'block' : 'none' %>;">
+                                    
+                                    <input type="number" name="deliveryCharge" class="delivery-charge" data-id="<%= donation._id %>"
+                                        placeholder="Enter Charge" value="<%= donation.deliveryCharge || '' %>"
+                                        style="display: <%= donation.deliveryMethod === 'assigned_delivery' ? 'block' : 'none' %>;">
+                                    
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </form>
+                            </td>
+                            <td><%= donation.pickupLocation || 'N/A' %></td>
+                            <td><%= donation.dropLocation || 'N/A' %></td>
+                            <td><%= donation.deliveryMethod === 'assigned_delivery' ? `₹${donation.deliveryCharge}` : 'N/A' %></td>
+                            <td data-id="<%= donation._id %>">
+                                <% if (donation.deliveryStatus === "pending_delivery") { %>
+                                    <span class="status pending">Pending</span>
+                                <% } else if (donation.deliveryStatus === "accepted_delivery") { %>
+                                    <span class="status accepted">Accepted</span>
+                                <% } else { %>
+                                    <span class="status not-assigned">Not Assigned</span>
+                                <% } %>
+                            </td>
+                            
+                            
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p class="no-donations">No accepted donations yet.</p>
+        <% } %>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    // Show/hide input fields based on delivery method selection
+    document.querySelectorAll('.delivery-method').forEach(select => {
+        select.addEventListener('change', function () {
+            const donationId = this.dataset.id;
+            const chargeField = document.querySelector(`.delivery-charge[data-id="${donationId}"]`);
+            const pickupField = document.querySelector(`.pickup-location[data-id="${donationId}"]`);
+            const dropField = document.querySelector(`.drop-location[data-id="${donationId}"]`);
+
+            if (this.value === 'assigned_delivery') {
+                chargeField.style.display = "block";
+                pickupField.style.display = "block";
+                dropField.style.display = "block";
+            } else {
+                chargeField.style.display = "none";
+                pickupField.style.display = "none";
+                dropField.style.display = "none";
+            }
+        });
+    });
+
+    // Handle form submissions
+    document.querySelectorAll('.update-form').forEach(form => {
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const donationId = this.dataset.id;
+            const deliveryMethod = formData.get('deliveryMethod');
+            const deliveryCharge = formData.get('deliveryCharge');
+            const pickupLocation = formData.get('pickupLocation');
+            const dropLocation = formData.get('dropLocation');
+
+            // Client-side validation
+            if (!deliveryMethod) {
+                alert('Please select a delivery method');
+                return;
+            }
+
+            if (deliveryMethod === 'assigned_delivery' && (!pickupLocation || !dropLocation)) {
+                alert('Please enter Pickup and Drop locations');
+                return;
+            }
+
+            if (deliveryMethod === 'assigned_delivery' && !deliveryCharge) {
+                alert('Please enter a delivery charge');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/update-delivery-method/${donationId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // ✅ Update UI dynamically
+                    const row = this.closest('tr');
+
+                    // Update the delivery charge, pickup location, and drop location in the table
+                    row.querySelector('td:nth-child(7)').textContent = pickupLocation || 'N/A'; // Pickup Location
+                    row.querySelector('td:nth-child(8)').textContent = dropLocation || 'N/A'; // Drop Location
+                    row.querySelector('td:nth-child(9)').textContent =
+                        deliveryMethod === 'assigned_delivery' ? `₹${deliveryCharge}` : 'N/A'; // Delivery Charge
+
+                         // ✅ Update Action column (Status → Pending)
+        const actionColumn = row.querySelector('td:nth-child(10)'); // Adjust column index if needed
+        actionColumn.innerHTML = '<span class="status pending">Pending</span>';
+
+
+                    // Show success feedback
+                    alert('Delivery details updated successfully! ✅');
+                } else {
+                    alert('Error updating delivery method! ❌');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Server error! Please try again.');
+            }
+        });
+    });
+});
+
+
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     document.querySelectorAll('.accept-delivery-btn').forEach(button => {
+//         button.addEventListener('click', async function () {
+//             const donationId = this.dataset.id;
+
+//             try {
+//                 const response = await fetch(`/accept-delivery/${donationId}`, {
+//                     method: 'POST',
+//                 });
+
+//                 if (response.ok) {
+//                     // ✅ Update status in the UI
+//                     const row = this.closest('tr');
+//                     row.querySelector('.status').textContent = 'Accepted';
+//                     this.remove(); // Remove the Accept button
+//                 } else {
+//                     alert('Failed to accept delivery ❌');
+//                 }
+//             } catch (error) {
+//                 console.error('Error:', error);
+//                 alert('Server error ❌');
+//             }
+//         });
+//     });
+// });
+
+    </script>
+
+</body>
+</html>

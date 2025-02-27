@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Deliveries</title>
+    <link rel="stylesheet" href="/css/deliveryDashboard.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <h2>📦 Pending Deliveriessss</h2>
+        <% if (pendingDeliveries.length > 0) { %>
+         <!-- ✅ Correct Variable -->
+            <table class="deliveries-table">
+                <thead>
+                    <tr>
+                        <th>Food Name</th>
+                        <th>Quantity</th>
+                        <th>Pickup-location</th>
+                        <th>Drop-location</th>
+                        <th>Delivery Charge</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% pendingDeliveries.forEach(donation => { %>
+                        <tr>
+                            <td><%= donation.donationId?.foodname || 'Not Available' %></td>
+    <td><%= donation.donationId?.quantity || 'Not Available' %></td>
+    <td><%= donation.donationId?.pickupLocation || 'Not Available' %></td>
+<td><%= donation.donationId?.dropLocation || 'Not Available' %></td>
+    <td>₹<%= donation.deliveryCharge || '0' %></td>
+                            <td>
+                                <form action="/accept-delivery/<%= donation._id %>" method="POST">
+                                    <button type="submit" class="btn-accept">Accept Delivery</button>
+                                </form>
+                                
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p class="no-deliveries">No pending deliveries at the moment.</p>
+        <% } %>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".btn-accept").forEach(button => {
+                button.addEventListener("click", async function (event) {
+                    event.preventDefault();
+        
+                    const deliveryId = this.closest("form").getAttribute("action").split("/").pop();
+                    const buttonElement = this;
+        
+                    try {
+                        const response = await fetch(`/accept-delivery/${deliveryId}`, { method: "POST" });
+                        const result = await response.json();
+        
+                        if (result.success) {
+                            // ✅ Change button text to "Accepted" instead of reloading page
+                            buttonElement.textContent = "Accepted";
+                            buttonElement.classList.add("accepted-btn"); // Optional: Add styling
+                            buttonElement.disabled = true; // Prevent multiple clicks
+        
+                            alert("✅ Delivery Accepted Successfully!");
+                        } else {
+                            alert("❌ Error accepting delivery.");
+                        }
+                    } catch (error) {
+                        console.error("❌ Server error:", error);
+                        alert("❌ Server error! Try again.");
+                    }
+                });
+            });
+        });
+        </script>
+        
+        
+    
+</body>
+</html>

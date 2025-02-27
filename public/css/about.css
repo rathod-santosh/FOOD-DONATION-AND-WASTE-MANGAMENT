@@ -1,0 +1,313 @@
+
+/* about */
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  body {
+    line-height: 1.6;
+    color: #333;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  
+  /* Hero Section */
+  .hero {
+    height: 80vh;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding-top: 80px;
+  }
+  
+  .hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+  
+  .hero-content p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  /* Section Styles */
+  section {
+    padding: 80px 0;
+  }
+  
+  h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: #06C167;
+  }
+  
+  /* Mission Section */
+  .mission-content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .mission-text {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+  
+  .stat-card {
+    text-align: center;
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .stat-card i {
+    font-size: 2.5rem;
+    color: #06C167;
+    margin-bottom: 15px;
+  }
+  
+  .stat-card h3 {
+    font-size: 2rem;
+    color: #06C167;
+    margin-bottom: 10px;
+  }
+  
+  /* Process Section */
+  /* Base Styling */
+.process-header h3 {
+    color: #06C167; /* Green color for both Donor and NGO headers */
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+.process-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.process-card {
+    padding: 20px;
+    background: #f4f7f6;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.process-card:hover {
+    transform: translateY(-5px);
+}
+
+.process-card i {
+    font-size: 3rem;
+    color: #06C167; /* Green color for icons */
+    margin-bottom: 20px;
+}
+
+.process-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.process-card p {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .process-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .process-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+  
+  /* Team Section */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+  
+  .team-member {
+    text-align: center;
+  }
+  
+  .member-photo {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+    background: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .member-photo i {
+    font-size: 4rem;
+    color: #06C167;
+  }
+  
+  /* Partners Section */
+  .partners {
+    background: #f9f9f9;
+  }
+  
+  .partners-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+  
+  .partner-logo {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .partner-logo i {
+    font-size: 3rem;
+    color: #06C167;
+    margin-bottom: 15px;
+
+  }
+
+  .member-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image fills the circular space */
+    border-radius: 50%;
+}
+  
+  /* Contact Section */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+  }
+  
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .info-item i {
+    font-size: 1.5rem;
+    color: #06C167;
+  }
+  
+  /* Smooth Scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .process-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+    }
+  
+    .hamburger {
+        display: block;
+        cursor: pointer;
+    }
+  
+    .hamburger .line {
+        width: 30px;
+        height: 3px;
+        background: #333;
+        margin: 6px 0;
+    }
+  
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+  
+    .team-grid,
+    .partners-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+  
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .stats-grid,
+    .process-grid,
+    .team-grid,
+    .partners-grid {
+        grid-template-columns: 1fr;
+    }
+  
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+  
+    section {
+        padding: 40px 0;
+    }
+  
+    h2 {
+        font-size: 2rem;
+    }
+  }
+  

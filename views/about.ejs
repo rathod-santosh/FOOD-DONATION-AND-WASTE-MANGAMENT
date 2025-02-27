@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Food Donate</title>
+    <link rel="stylesheet" href="/css/about.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">Food <b style="color: #06C167;">Donate</b></div>
+        <div class="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+        <%- include("navbar"); %> <!-- Assuming you have a navbar.ejs partial that includes your links -->
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Making a Difference,<br>One Meal at a Time</h1>
+                <p>Connecting food donors with those in need across India</p>
+            </div>
+        </section>
+
+        <section id="aboutUs" class="mission"> <!-- Added id="aboutUs" for navigation -->
+            <div class="container">
+                <h2>Our Mission</h2>
+                <div class="mission-content">
+                    <div class="mission-text">
+                        <p>We are committed to reducing food waste in India while ensuring that surplus food reaches those who need it most. Through our platform, we create meaningful connections between donors and verified nonprofits.</p>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-utensils"></i>
+                            <h3>40%</h3>
+                            <p>of food wasted in India annually</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-users"></i>
+                            <h3>1000+</h3>
+                            <p>NGO partners</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-hands-helping"></i>
+                            <h3>50K+</h3>
+                            <p>meals donated</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="process">
+          <div class="container">
+              <h2>How It Works</h2>
+              
+              <!-- Donor Process Steps -->
+              <div class="process-header">
+                  <h3>For Donors</h3>
+              </div>
+              <div class="process-grid">
+                  <div class="process-card">
+                      <i class="fas fa-user-plus"></i>
+                      <h3>Register</h3>
+                      <p>Sign up as a donor on our platform to start giving.</p>
+                  </div>
+                  <div class="process-card">
+                      <i class="fas fa-donate"></i>
+                      <h3>Donate</h3>
+                      <p>List available food donations for those in need.</p>
+                  </div>
+                  <div class="process-card">
+                      <i class="fas fa-history"></i>
+                      <h3>Donation History</h3>
+                      <p>Track your donations and make an impact on your profile.</p>
+                  </div>
+              </div>
+      
+              <!-- NGO Process Steps -->
+              <div class="process-header">
+                  <h3>For NGOs</h3>
+              </div>
+              <div class="process-grid">
+                  <div class="process-card">
+                      <i class="fas fa-user-plus"></i>
+                      <h3>Register</h3>
+                      <p>Sign up as an NGO partner to receive food donations.</p>
+                  </div>
+                  <div class="process-card">
+                      <i class="fas fa-box-open"></i>
+                      <h3>Accept Donations</h3>
+                      <p>Get matched with donors and accept the donations listed.</p>
+                  </div>
+                  <div class="process-card">
+                      <i class="fas fa-tachometer-alt"></i>
+                      <h3>Manage Dashboard</h3>
+                      <p>View your donations and manage your NGO’s profile.</p>
+                  </div>
+              </div>
+          </div>
+      </section>
+      
+
+        <section class="team">
+            <div class="container">
+                <h2>Our Team</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-photo">
+                            <!-- <i class="fas fa-user-circle"></i> -->
+                             <img src="/img/rathod food photo.jpg" alt="">
+                        </div>
+                        <h3>Rathod Santosh</h3>
+                        <p>Founder & CEO</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-photo">
+                          <img src="/img/utkarsh.png" alt="">
+                        </div>
+                        <h3>Utkarsh Rane</h3>
+                        <p>Operations Director</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-photo">
+                          <img src="/img/o.jpg" alt="">
+                        </div>
+                        <h3>Omkar Sardesai</h3>
+                        <p>NGO Relations</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="partners">
+            <div class="container">
+                <h2>Our Partners</h2>
+                <div class="partners-grid">
+                    <div class="partner-logo">
+                        <i class="fas fa-building"></i>
+                        <p>Food Bank India</p>
+                    </div>
+                    <div class="partner-logo">
+                        <i class="fas fa-hands-helping"></i>
+                        <p>Feeding India</p>
+                    </div>
+                    <div class="partner-logo">
+                        <i class="fas fa-heart"></i>
+                        <p>Robin Hood Army</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact">
+          <div class="container">
+              <h2>Find Us</h2>
+              <div class="contact-grid">
+                  <div class="map">
+                      <!-- Embed Google Map iframe for the provided address -->
+                      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3769.6890803129147!2d73.7722833143468!3d18.628406687469516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd6b1b179759015%3A0x5017cfb138cc426!2sNavashakti%20Society%2C%20Ravet%2C%20Pimpri-Chinchwad%2C%20Maharashtra%20411044!5e0!3m2!1sen!2sin!4v1677628200162!5m2!1sen!2sin" 
+                          width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                  </div>
+                  <div class="contact-info">
+                      <div class="info-item">
+                          <i class="fas fa-map-marker-alt"></i>
+                          <p>Navashakti Society, Ravet, Pimpri-Chinchwad, Maharashtra 411044</p>
+                      </div>
+                      <div class="info-item">
+                          <i class="fas fa-phone"></i>
+                          <p>+91 1234567890</p>
+                      </div>
+                      <div class="info-item">
+                          <i class="fas fa-envelope"></i>
+                          <p>rathodsanty43@gmail.com</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+      
+    </main>
+
+    <script>
+        hamburger = document.querySelector(".hamburger");
+        hamburger.onclick = function() {
+            navBar = document.querySelector(".nav-bar");
+            navBar.classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

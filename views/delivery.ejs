@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- Link your CSS file -->
+</head>
+<body>
+
+    <h2>Available Deliveries</h2>
+
+    <% if (deliveries.length > 0) { %>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Food Name</th>
+                    <th>Meal Type</th>
+                    <th>Quantity</th>
+                    <th>Donor Name</th>
+                    <th>Pickup Address</th>
+                    <th>Delivery Fee</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% deliveries.forEach(delivery => { %>
+                    <tr>
+                        <td><%= delivery.donationId.foodname %></td>
+                        <td><%= delivery.donationId.meal %></td>
+                        <td><%= delivery.donationId.quantity %></td>
+                        <td><%= delivery.donationId.name %></td>
+                        <td><%= delivery.donationId.address %></td>
+                        <td>$<%= delivery.fee || 0 %></td>
+                        <td>
+                            <form action="/delivery/accept" method="POST">
+                                <input type="hidden" name="deliveryId" value="<%= delivery._id %>">
+                                <button type="submit">Accept Delivery</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p>No deliveries available at the moment.</p>
+    <% } %>
+
+</body>
+</html>

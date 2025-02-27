@@ -1,0 +1,47 @@
+
+
+
+
+
+
+
+<nav class="nav-bar">
+    <ul >
+      <li><a href="/home">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      
+        <% if (user) { %>
+          <script>console.log("User Role in Navbar:", "<%= user.role %>");</script>
+        
+          <% if (user.role === 'Ngo') { %>
+            <li><a href="/ngo/donations">Donations</a></li>
+            <li><a href="/ngo/dashboard">Dashboard</a></li>
+            
+        
+          <% } else if (user.role === 'Delivery') { %>
+            <li><a href="/delivery/pending">📦 Pending Deliveries</a></li>
+            <li><a href="/delivery/accepted">✅ Accepted Deliveries</a></li>
+
+            
+          <% } else { %>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/donate">Donate</a></li>
+          <% } %>
+        
+          <li><a href="/logout">Logout</a></li>
+        <% } else { %>
+          <li><a href="/login">Login</a></li>
+          <li><a href="/signup">Signup</a></li>
+        <% } %>
+        
+
+    </ul>
+</nav>
+
+
+
+<!-- end -->
+
+
+

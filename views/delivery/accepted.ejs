@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accepted Deliveries</title>
+    <link rel="stylesheet" href="/css/deliveryDashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .dashboard-container {
+            max-width: 90%;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #ff6600;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #ffecd6;
+            transition: 0.3s ease-in-out;
+        }
+
+        td {
+            color: #444;
+        }
+
+        /* Responsive Table */
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead tr {
+                display: none;
+            }
+
+            tbody tr {
+                margin-bottom: 10px;
+                display: block;
+                border: 1px solid #ddd;
+                border-radius: 12px;
+                padding: 10px;
+                background: white;
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+                font-weight: 500;
+            }
+
+            td:before {
+                content: attr(data-label);
+                font-weight: 700;
+                color: #ff6600;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <h2><i class="fa-solid fa-truck"></i> Accepted Deliveries</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Food Name</th>
+                    <th>Quantity</th>
+                    <th>Delivery Charge</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% acceptedDeliveries.forEach(delivery => { %>
+                    <tr>
+                        <td data-label="Food Name"><%= delivery.donationId.foodname %></td>
+                        <td data-label="Quantity"><%= delivery.donationId.quantity %></td>
+                        <td data-label="Delivery Charge">₹<%= delivery.deliveryCharge %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

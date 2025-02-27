@@ -1,0 +1,223 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* General Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f0f2f5, #dfe6e9);
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    color: #2c3e50;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    max-width: 1200px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.dashboard-container:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Headings */
+h2 {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+h3 {
+    color: #3498db;
+    font-size: 22px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+/* User Info */
+p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* Table */
+.donations-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.donations-table th, .donations-table td {
+    padding: 12px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.donations-table th {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+.donations-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.donations-table tr:hover {
+    background-color: #ecf0f1;
+    transition: 0.3s ease-in-out;
+}
+
+/* No Donations Message */
+.no-donations {
+    font-size: 18px;
+    color: #e74c3c;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 10px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    margin-top: 5px;
+}
+
+/* Accept Delivery Button */
+.accept-delivery-btn {
+    background: #27ae60;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.accept-delivery-btn:hover {
+    background: #219150;
+}
+
+/* Logout Button */
+.btn-logout {
+    background: #e74c3c;
+}
+
+.btn-logout:hover {
+    background: #c0392b;
+}
+
+/* Status Labels */
+.status {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.status.pending {
+    background: #f39c12;
+    color: white;
+}
+
+.status.accepted {
+    background: #27ae60;
+    color: white;
+}
+
+.status.not-assigned {
+    background: #bdc3c7;
+    color: #2c3e50;
+}
+
+/* Form Styles */
+.update-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.update-form label {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.update-form select, 
+.update-form input {
+    padding: 8px;
+    width: 90%;
+    max-width: 300px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Hide inputs if not needed */
+.update-form input[style*="none"] {
+    display: none !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 15px;
+    }
+
+    .donations-table th, .donations-table td {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Notifications Section */
+.notifications-container {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+
+.notifications-container h3 {
+    color: #e67e22;
+}
+
+.notification {
+    padding: 10px;
+    margin: 10px 0;
+    background: #fff;
+    border-left: 4px solid #f39c12;
+    border-radius: 4px;
+}
+
+.notification.unread {
+    background: #e3f2fd;
+    border-left: 4px solid #2196f3;
+}

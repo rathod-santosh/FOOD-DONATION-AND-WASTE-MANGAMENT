@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Donate</title>
+    <link rel="stylesheet" href="/css/loginstyle.css">
+</head>
+<body style="background-color: #06C167;">
+    <div class="container">
+        <div class="regformf">
+            <form action="/donate" method="post">
+                <p class="logo">Food <b style="color: #06C167;">Donate</b></p>
+
+                <!-- Food Name -->
+                <div class="input">
+                    <label for="foodname">Food Name:</label>
+                    <input type="text" id="foodname" name="foodname" required />
+                </div>
+
+                <!-- Meal Type -->
+                <div class="radio">
+                    <label for="meal">Meal Type:</label>
+                    <br><br>
+                    <input type="radio" name="meal" id="veg" value="veg" required />
+                    <label for="veg" style="padding-right: 40px;">Veg</label>
+                    <input type="radio" name="meal" id="non-veg" value="Non-veg">
+                    <label for="non-veg">Non-Veg</label>
+                </div>
+
+                <br>
+
+                <!-- Food Category -->
+                <div class="input">
+                    <label for="food">Select the Category:</label>
+                    <br><br>
+                    <div class="image-radio-group">
+                        <input type="radio" id="raw-food" name="category" value="raw-food">
+                        <label for="raw-food">
+                            <img src="/img/raw-food.png" alt="Raw Food">
+                        </label>
+                        <input type="radio" id="cooked-food" name="category" value="cooked-food" checked>
+                        <label for="cooked-food">
+                            <img src="/img/cooked-food.png" alt="Cooked Food">
+                        </label>
+                        <input type="radio" id="packed-food" name="category" value="packed-food">
+                        <label for="packed-food">
+                            <img src="/img/packed-food.png" alt="Packed Food">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Quantity -->
+                <div class="input">
+                    <label for="quantity">Quantity (number of persons / kg):</label>
+                    <input type="text" id="quantity" name="quantity" required />
+                </div>
+
+                <b><p style="text-align: center;">Contact Details</p></b>
+
+                <!-- Contact Details -->
+                <div class="input">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" value="<%= name %>" required />
+
+                    <label for="phoneno">Phone No:</label>
+                    <input type="text" id="phoneno" name="phoneno" maxlength="10" pattern="[0-9]{10}" required />
+                </div>
+
+                <!-- Location -->
+                <div class="input">
+                    <label for="district">District:</label>
+                    <select id="district" name="district" style="padding:10px;">
+                        <option value="chennai">Chennai</option>
+                        <option value="kancheepuram">Kancheepuram</option>
+                        <option value="thiruvallur">Thiruvallur</option>
+                        <option value="vellore">Vellore</option>
+                        <option value="tiruvannamalai">Tiruvannamalai</option>
+                        <option value="tiruppur">Tiruppur</option>
+                        <option value="coimbatore">Coimbatore</option>
+                        <option value="erode">Erode</option>
+                        <option value="salem">Salem</option>
+                        <option value="namakkal">Namakkal</option>
+                        <option value="tiruchirappalli">Tiruchirappalli</option>
+                        <option value="thanjavur">Thanjavur</option>
+                        <option value="pudukkottai">Pudukkottai</option>
+                        <option value="karur">Karur</option>
+                        <option value="ariyalur">Ariyalur</option>
+                        <option value="perambalur">Perambalur</option>
+                        <option value="madurai" selected>Madurai</option>
+                        <option value="virudhunagar">Virudhunagar</option>
+                        <option value="dindigul">Dindigul</option>
+                        <option value="ramanathapuram">Ramanathapuram</option>
+                        <option value="sivaganga">Sivaganga</option>
+                        <option value="thoothukkudi">Thoothukkudi</option>
+                        <option value="tirunelveli">Tirunelveli</option>
+                        <option value="tenkasi">Tenkasi</option>
+                        <option value="kanniyakumari">Kanniyakumari</option>
+                    </select>
+
+                    <label for="address" style="padding-left: 10px;">Address:</label>
+                    <input type="text" id="address" name="address" required />
+                </div>
+
+                <div class="btn">
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html> 
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, <%= user.username  %></h1>
+        <h2>Your Donations</h2>
+
+        <% if (user.donations.length === 0) { %>
+            <p>No donations yet.</p>
+        <% } else { %>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Food Name</th>
+                        <th>Meal Type</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Phone</th>
+                        <th>District</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% user.donations.forEach(donation => { %>
+                        <tr>
+                            <td><%= donation.foodname %></td>
+                            <td><%= donation.meal %></td>
+                            <td><%= donation.category %></td>
+                            <td><%= donation.quantity %></td>
+                            <td><%= donation.phoneno %></td>
+                            <td><%= donation.district %></td>
+                            <td><%= donation.address %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } %>
+    </div>
+</body>
+</html> -->
+
+
+
+<!-- 
+<h2>Welcome, <%= user.username %></h2>
+
+<h3>Your Donations:</h3>
+<ul>
+  <% donations.forEach(donation => { %>
+    <li><strong>Food Name:</strong> <%= donation.foodname %> | <strong>Quantity:</strong> <%= donation.quantity %></li>
+  <% }) %>
+</ul> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- its is correct -->
+
+ 
+<nav class="nav-bar">
+    <ul>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+    </ul>
+</nav>
+
+<nav class="nav-bar">
+    <ul>
+      <% if (user) { %>
+        <% if (user.role === 'Ngo') { %>
+          <!-- <-- NGO-specific links --> 
+          <li><a href="/ngo-dashboard">Dashboard</a></li>
+          <li><a href="/manage-donations">Donations</a></li>
+        <% } else if (user.role === 'Delivery') { %>
+          <!-- Delivery-specific links -->
+          <li><a href="/delivery-dashboard">Delivery </a></li>
+          <li><a href="/pickup-requests">Pickup </a></li>
+        <% } else { %>
+          <!-- Regular user links -->
+          <li><a href="/profile">Profile</a></li>
+          <li><a href="/donate">Donate</a></li>
+        <% } %>
+        
+        <!-- Common Links for Logged-in Users -->
+        <li><a href="/logout">Logout</a></li>
+
+      <% } else { %>
+        <!-- Links for Non-Logged-in Users -->
+        <li><a href="/login">Login</a></li>
+        <li><a href="/signup">Signup</a></li>
+      <% } %>
+    </ul>
+</nav>
+ 
+
+
+<!-- end -->
+
+
+
+
+
+
+ <!-- <nav class="nav-bar">
+    <ul>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/about" >About</a></li>
+        <li><a href="/contact">Contact</a></li>
+         <li><a href="/index">Log in</a></li> 
+    </ul>
+</nav>
+
+<nav class="nav-bar">
+    <ul>
+      <!-- <li><a href="/home">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact">Contact</a></li> -->
+<!--       
+    <% if (user) { %>
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="/donate">Donate</a></li>
+        <li><a href="/logout">Logout</a></li>
+      <% } else { %>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/signup">Signup</a></li>
+      <% } %>
+    </ul>
+  </nav>  -->
+
+
+
+
+
+
+
+<!-- its is correct -->
+
+ 
+  <nav class="nav-bar">
+    <ul>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+    </ul>
+</nav>
+
+<nav class="nav-bar">
+    <ul>
+      <% if (user) { %>
+        <% if (user.role === 'Ngo') { %>
+          <!-- <-- NGO-specific links --> 
+          <li><a href="/ngo-dashboard">Dashboard</a></li>
+          <li><a href="/manage-donations">Donations</a></li>
+        <% } else if (user.role === 'Delivery') { %>
+          <!-- Delivery-specific links -->
+          <li><a href="/delivery-dashboard">Delivery </a></li>
+          <li><a href="/pickup-requests">Pickup </a></li>
+        <% } else { %>
+          <!-- Regular user links -->
+          <li><a href="/profile">Profile</a></li>
+          <li><a href="/donate">Donate</a></li>
+        <% } %>
+        
+        <!-- Common Links for Logged-in Users -->
+        <li><a href="/logout">Logout</a></li>
+
+      <% } else { %>
+        <!-- Links for Non-Logged-in Users -->
+        <li><a href="/login">Login</a></li>
+        <li><a href="/signup">Signup</a></li>
+      <% } %>
+    </ul>
+</nav>
+ 
+
+
+<!-- end -->
+
+
+
+
+
+<!-- 
+<nav class="nav-bar">
+    <ul>
+      <li><a href="/home">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <% if (user) { %>
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="/donate">Donate</a></li>
+        <li><a href="/logout">Logout</a></li>
+      <% } else { %>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/signup">Signup</a></li>
+      <% } %>
+    </ul>
+  </nav> -->
+
+
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donations</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="donations">
+        <h2>Donations</h2>
+        
+        <!-- Display donations -->
+        <% if (donations.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Food Name</th>
+                        <th>Meal Type</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Contact</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% donations.forEach(function(donation) { %>
+                        <tr>
+                            <td><%= donation.foodname %></td>
+                            <td><%= donation.meal %></td>
+                            <td><%= donation.category %></td>
+                            <td><%= donation.quantity %></td>
+                            <td><%= donation.name %> - <%= donation.phoneno %></td>
+                            <td><%= donation.district %>, <%= donation.address %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No donations available.</p>
+        <% } %>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+<nav class="nav-bar">
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/profile">Login</a></li>
+    </ul>
+</nav>
+
+
+
+
+
+
+<!-- imp -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Donations</title>
+</head>
+<body>
+    <h1>Pending Donations</h1>
+
+    <% if (donations.length > 0) { %>
+        <table border="1">
+            <tr>
+                <th>Food Name</th>
+                <th>Quantity</th>
+                <th>Category</th>
+                <th>District</th>
+                <th>Action</th>
+            </tr>
+            <% donations.forEach((donation) => { %>
+                <tr>
+                    <td><%= donation.foodname %></td>
+                    <td><%= donation.quantity %></td>
+                    <td><%= donation.category %></td>
+                    <td><%= donation.district %></td>
+                    <td>
+                        <form action="/ngo/donations/update" method="POST">
+                            <input type="hidden" name="donationId" value="<%= donation._id %>">
+                            <select name="status">
+                                <option value="Pending" <%= donation.status === "Pending" ? "selected" : "" %>>Pending</option>
+                                <option value="Accepted">Accepted</option>
+                            </select>
+                            <button type="submit">Update</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </table>
+    <% } else { %>
+        <p>No pending donations.</p>
+    <% } %>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//new
+
+
+const express = require("express");
+const path = require("path");
+const session = require("express-session");
+const passport = require("passport");
+const mongoose = require("mongoose");
+
+const User = require("./models/user");
+const Donation = require("./models/donation");
+
+// const ngoDonationController = require('./controllers/ngoDonation');
+
+const app = express();
+const PORT = 4000;
+
+// Connect to MongoDB
+const mongoURI = "mongodb://localhost:27017/food";
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("MongoDB connected..."))
+  .catch((err) => console.log(err));
+
+// Set EJS as the template engine
+app.set("view engine", "ejs");
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/img", express.static(path.join(__dirname, "img")));
+
+
+
+
+// Session setup
+app.use(session({
+  secret: "your-secret-key",
+  resave: false,
+  saveUninitialized: false,
+}));
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Middleware to pass user data to all views
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+});
+
+
+const ngoDonationController = require("./controllers/ngoDonation");
+const userController = require("./controllers/userController");
+
+// NGO Routes
+app.get("/ngo/donations", ngoDonationController.getPendingDonations);
+app.post("/ngo/donations/update", ngoDonationController.updateDonationStatus);
+app.get("/ngo/dashboard", ngoDonationController.getAcceptedDonations);
+
+
+// 🌟 User Routes (Directly in app.js)
+app.get("/user/donations", userController.getUserDonations);
+
+
+
+
+
+
+// Routes
+app.get("/", (req, res) => {
+  res.render("index");
+});
+
+app.get("/home", (req, res) => {
+  res.render("home");
+});
+
+app.get("/about", (req, res) => {
+  res.render("about", { user: req.session.user || null });
+});
+
+app.get("/contact", (req, res) => {
+  res.render("contact", { user: req.session.user || null });
+});
+
+// Signup Route
+app.get("/signup", (req, res) => {
+  const role = req.query.role || "user";
+  res.render("signup", { role });
+});
+
+app.post("/signup", async (req, res) => {
+  const { username, email, password, role } = req.body;
+  try {
+    const user = new User({ username, email, password, role });
+    await user.save(); // Save user to the database
+    console.log("New user registered:", { username, email, role });
+    res.redirect("/login");
+  } catch (err) {
+    console.error(err);
+    res.send("Error registering user.");
+  }
+});
+
+// Login Route
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (user && user.password === password) {
+      req.session.user = user; // Store user in session
+      res.redirect("/home");
+    } else {
+      res.send("Invalid email or password");
+    }
+  } catch (err) {
+    console.error(err);
+    res.send("Error logging in.");
+  }
+});
+// app.post("/login", (req, res) => {
+//   const { email, password } = req.body;
+//   const user = users.find((u) => u.email === email && u.password === password);
+//   if (user) {
+//     req.session.user = user;  // Store user data, including role
+//     res.redirect("/home");
+//   } else {
+//     res.send("Invalid email or password");
+//   }
+// });
+
+
+// Logout Route
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/login");
+  });
+});
+
+// Profile Route (MongoDB for Donations)
+// app.get("/profile", async (req, res) => {
+//   if (!req.session.user) return res.redirect("/login");
+
+//   try {
+//     const donations = await Donation.find({ email: req.session.user.email });
+//     res.render("profile", { user: req.session.user, donations });
+//   } catch (err) {
+//     console.error(err);
+//     res.send("Error fetching donations.");
+//   }
+// });
+
+// Profile Route (MongoDB for Donations)
+app.get("/profile", async (req, res) => {
+  if (!req.session.user) return res.redirect("/login");
+
+  // Check if the user is an NGO
+  if (req.session.user.role === "ngo") {
+    // NGOs can see all donations
+    try {
+      const allDonations = await Donation.find();
+      res.render("profile", { user: req.session.user, donations: allDonations });
+    } catch (err) {
+      console.error(err);
+      res.send("Error fetching donations.");
+    }
+  } else {
+    // Regular users can only see their own donations
+    try {
+      const userDonations = await Donation.find({ email: req.session.user.email });
+      res.render("profile", { user: req.session.user, donations: userDonations });
+    } catch (err) {
+      console.error(err);
+      res.send("Error fetching donations.");
+    }
+  }
+});
+
+
+// Route for NGOs to view all donations
+// Route for NGOs to view all donations
+// app.get("/ngo/donations", (req, res) => {
+//   if (!req.session.user || req.session.user.role !== "ngo") {
+//     return res.redirect("/login"); // If not an NGO, redirect to login
+//   }
+
+//   // Fetch all donations from MongoDB for the NGO
+//   Donation.find({}, (err, donations) => {
+//     if (err) {
+//       console.error(err);
+//       return res.send("Error fetching donations.");
+//     }
+//     res.render("ngoDonations", { donations });  // Render the donations for NGO
+//   });
+// });
+app.get('/ngo/donations', ngoDonationController.viewDonations);
+
+
+
+
+// Donate Route (GET)
+app.get("/donate", (req, res) => {
+  if (!req.session.user) return res.redirect("/login");
+  res.render("donate", { name: req.session.user.username });
+});
+
+// Donate Route (POST)
+app.post("/donate", async (req, res) => {
+  if (!req.session.user) return res.redirect("/login");
+
+  const { foodname, meal, category, quantity, name, phoneno, district, address } = req.body;
+  const newDonation = new Donation({
+    foodname,
+    meal,
+    category,
+    quantity,
+    name,
+    phoneno,
+    district,
+    address,
+    email: req.session.user.email,
+  });
+
+  try {
+    await newDonation.save();
+    console.log("New donation:", newDonation);
+    res.redirect("/profile");
+  } catch (err) {
+    console.error(err);
+    res.send("Error saving donation.");
+  }
+});
+
+
+
+
+
+
+
+
+app.use((req, res, next) => {
+  console.log(req.session.user); // Log session user info to debug
+  res.locals.user = req.session.user || null;
+  next();
+});
+
+
+// 404 Page
+app.use((req, res) => {
+  res.status(404).render("404");
+});
+
+// Start Server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+
+
+
+
+
+const Donation = require('../models/donation'); // Assuming Donation model exists
+
+// Controller to view donations for the NGO
+module.exports.viewDonations = (req, res) => {
+  // You can query the donations from the database
+  Donation.find()
+    .then((donations) => {
+      // Render the donations view, passing the donations data
+      res.render('ngoDonations', { donations });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('Server Error');
+    });
+};
+
+
+
+
+
+// Display only "Pending" donations for NGOs
+exports.getPendingDonations = async (req, res) => {
+    try {
+        const donations = await Donation.find({ status: "Pending" });
+        res.render("ngoDonations", { donations });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server Error");
+    }
+};
+
+// Handle donation status update (Accept request)
+exports.updateDonationStatus = async (req, res) => {
+    try {
+        const { donationId, status } = req.body;
+        const ngoId = req.user._id; // Get the logged-in NGO's ID
+
+        if (status === "Accepted") {
+            await Donation.findByIdAndUpdate(donationId, { 
+                status, 
+                acceptedBy: ngoId 
+            });
+        } else {
+            await Donation.findByIdAndUpdate(donationId, { status });
+        }
+
+        res.redirect("/ngo/donations");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server Error");
+    }
+};
+
+
+// Display only "Accepted" donations on NGO Dashboard
+exports.getAcceptedDonations = async (req, res) => {
+    try {
+        const donations = await Donation.find({ status: "Accepted" });
+        res.render("ngoDashboard", { donations });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server Error");
+    }
+};
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Food Donate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background: #06C167;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background: #05a056;
+        }
+    </style>
+</head>
+<body>
+    <p class="logo">Food <b style="color: #06C167;">Donate</b></p>
+    <div class="form-container">
+        <form action="/signup" method="POST">
+            <input type="hidden" name="role" value="<%= role %>">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="submit-btn">Sign Up</button>
+        </form>
+        <p style="text-align: center; margin-top: 15px;">
+            Already have an account? <a href="/login" style="background: none; color: #06C167; padding: 0;">Login</a>
+        </p>
+    </div>
+</body>
+</html>
