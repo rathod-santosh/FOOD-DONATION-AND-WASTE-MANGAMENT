@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,16 +14,19 @@
             margin: 20px auto;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .form-group {
             margin-bottom: 15px;
         }
+
         .form-group label {
             display: block;
             margin-bottom: 5px;
             font-family: 'Poppins', sans-serif;
         }
+
         .form-group input {
             width: 100%;
             padding: 8px;
@@ -30,6 +34,7 @@
             border-radius: 4px;
             font-size: 16px;
         }
+
         .submit-btn {
             width: 100%;
             padding: 10px;
@@ -40,16 +45,25 @@
             cursor: pointer;
             font-size: 16px;
         }
+
         .submit-btn:hover {
             background: #05a056;
         }
     </style>
 </head>
+
 <body>
     <p class="logo">Food <b style="color: #06C167;">Donate</b></p>
     <div class="form-container">
         <form action="/signup" method="POST">
-            <input type="hidden" name="role" value="<%= role %>">
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role" name="role" required>
+                    <option value="user" <%=role==='user' ? 'selected' : '' %>>Donor</option>
+                    <option value="NGO" <%=role==='NGO' ? 'selected' : '' %>>NGO</option>
+                    <option value="DELIVERY" <%=role==='DELIVERY' ? 'selected' : '' %>>Delivery Partner</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" required>
@@ -59,16 +73,34 @@
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
             </div>
+            <div class="form-group" id="addressGroup" style="display: none;">
+                <label for="address">Address (Required for NGO)</label>
+                <input type="text" id="address" name="address">
+            </div>
             <button type="submit" class="submit-btn">Sign Up</button>
         </form>
+        <script>
+            document.getElementById('role').addEventListener('change', function () {
+                const addressGroup = document.getElementById('addressGroup');
+                const addressInput = document.getElementById('address');
+                if (this.value === 'NGO') {
+                    addressGroup.style.display = 'block';
+                    addressInput.required = true;
+                } else {
+                    addressGroup.style.display = 'none';
+                    addressInput.required = false;
+                }
+            });
+        </script>
         <p style="text-align: center; margin-top: 15px;">
             Already have an account? <a href="/login" style="background: none; color: #06C167; padding: 0;">Login</a>
         </p>
     </div>
 </body>
+
 </html>

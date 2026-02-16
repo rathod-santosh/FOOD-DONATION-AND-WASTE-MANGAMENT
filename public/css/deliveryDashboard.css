@@ -5,9 +5,19 @@ body {
     padding: 0;
 }
 
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 .dashboard-container {
     width: 80%;
-    margin: 20px auto;
+    margin: 100px auto 20px auto;
+    /* Adjusted top margin for fixed header */
     background: white;
     padding: 20px;
     border-radius: 10px;
@@ -25,7 +35,8 @@ h2 {
     margin-top: 20px;
 }
 
-.deliveries-table th, .deliveries-table td {
+.deliveries-table th,
+.deliveries-table td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
@@ -69,12 +80,3 @@ h2 {
 .btn.logout:hover {
     background-color: #c82333;
 }
-
-
-
-
-
-
-
-
-

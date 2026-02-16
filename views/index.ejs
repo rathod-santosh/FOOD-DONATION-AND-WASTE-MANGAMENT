@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,66 +8,295 @@
     <title>Food Donate</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <link rel="stylesheet" href="/css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(240, 248, 255, 0.8));
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            min-height: 200px;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            border: 2px solid #2196F3;
+            border-radius: 15px;
+            padding: 8px 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo img {
+            width: 40px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .logo b {
+            color: #FF9800;
+            font-weight: bold;
+        }
+
+        .para {
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #495057;
+            line-height: 1.5;
+        }
+
+        .tagline {
+            font-size: 0.9rem;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .signup {
+            margin-bottom: 25px;
+        }
+
+        .signup a {
+            display: inline-block;
+            padding: 14px 30px;
+            background: #4caf50;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .signup a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.5);
+        }
+
+        .log {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .log a {
+            display: inline-block;
+            padding: 14px 25px;
+            background: #2196f3;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+        }
+
+        .log a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.5);
+        }
+
+        .log a i {
+            margin-right: 8px;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .feature {
+            text-align: center;
+            flex: 1;
+            padding: 15px;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+
+        .feature i {
+            color: #4caf50;
+            margin-bottom: 10px;
+        }
+
+        .feature h3 {
+            font-size: 1.1rem;
+            color: #4caf50;
+            margin-bottom: 5px;
+        }
+
+        .feature p {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .stat {
+            text-align: center;
+            flex: 1;
+            padding: 15px;
+            background: rgba(33, 150, 243, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .stat i {
+            color: #2196f3;
+            margin-bottom: 10px;
+        }
+
+        .stat h4 {
+            font-size: 1.5rem;
+            color: #2196f3;
+            margin-bottom: 5px;
+        }
+
+        .stat p {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .logo-fixed {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+        }
+
+        .logo-fixed img {
+            width: 50px;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: #6c757d;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px 0;
+            font-size: 0.8rem;
+            border-top: 1px solid #dee2e6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .para {
+                font-size: 1rem;
+            }
+
+            .log {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .log a {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .log a {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <p class="logo"> Welcome to Food <b style="color: #06C167;">Donate</b></p>
-    <p class="para">Login as</p>
-    <div class="log">
-        <a href="/login?role=Donor">Donor</a>
-        <a href="/login?role=NGO">NGO</a>
-        <a href="/login?role=Delivery">
-            <i class="fa-solid fa-moped"></i> Delivery
-        </a>
-    </div>
-</body>
-</html>
-
-
-
-<!-- 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Donate - Login</title>
-<!--     
-    <!-- Font Awesome Icons -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"> -->
-    
-    <!-- Google Font -->
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-     -->
-    <!-- Custom CSS -->
-    <!-- <link rel="stylesheet" href="/css/login.css">
-</head> 
-<body>
-    
+    <div class="logo-fixed"><img src="/img/logo.png" alt="Food Donate Logo"></div>
+    <div class="logo">Food <b style="color: #2196F3;">Donate</b></div>
     <div class="container">
-        <h1 class="logo">Food <span>Donate</span></h1>
-        <p class="subtext">Choose your role to continue</p>
-        
-        <div class="roles">
-            <a href="/login?role=Donor" class="card donor">
-                <i class="fa-solid fa-hand-holding-heart"></i>
-                <h3>Donor</h3>
-                <p>Share your excess food</p>
+
+
+        <p class="tagline">Helping Communities Through Food Donation</p>
+
+
+        <div class="signup">
+            <a href="/signup">Sign Up</a>
+        </div>
+        <div class="log">
+            <a href="/login?role=Donor">
+                <i class="fas fa-user"></i> Donor
             </a>
-            
-            <a href="/login?role=NGO" class="card ngo">
-                <i class="fa-solid fa-users"></i>
-                <h3>NGO</h3>
-                <p>Connect with donors</p>
+            <a href="/login?role=NGO">
+                <i class="fas fa-building"></i> NGO
             </a>
-            
-            <a href="/login?role=Delivery" class="card delivery">
-                <i class="fa-solid fa-motorcycle"></i>
-                <h3>Delivery</h3>
-                <p>Help transport food</p>
+            <a href="/login?role=Delivery">
+                <i class="fas fa-truck"></i> Delivery
             </a>
         </div>
     </div>
 
 </body>
-</html> --> -->
+
+</html>

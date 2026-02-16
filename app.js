@@ -13,7 +13,7 @@ const User = require("./models/user");
 const Donation = require("./models/donation");
 const Notification = require("./models/notification");
 const Delivery = require("./models/delivery");
-const PendingDelivery = require('./models/PendingDelivery');  
+const PendingDelivery = require('./models/PendingDelivery');
 const AcceptedDelivery = require('./models/AcceptedDelivery');
 
 
@@ -26,7 +26,7 @@ const PORT = 4000;
 
 // Connect to MongoDB
 const mongoURI = process.env.MONGO_URI || "mongodb://localhost:27017/food";
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongoURI)
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.error("MongoDB connection error:", err));
 
@@ -67,6 +67,19 @@ app.use(async (req, res, next) => {
   next();
 });
 
+// Middleware to require specific roles
+function requireRole(role) {
+  return (req, res, next) => {
+    if (!req.session.user) {
+      return res.redirect('/login');
+    }
+    if (req.session.user.role !== role) {
+      return res.status(403).send('Access denied: Insufficient permissions');
+    }
+    next();
+  };
+}
+
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -93,17 +106,17 @@ const ngoDonationController = require("./controllers/ngoDonation");
 const userController = require("./controllers/userController");
 
 // NGO Routes
-app.get("/ngo/donations", ngoDonationController.getPendingDonations);
-app.post("/ngo/donations/update", ngoDonationController.updateDonationStatus);
+app.get("/ngo/donations", requireRole('NGO'), ngoDonationController.getPendingDonations);
+app.post("/ngo/donations/update", requireRole('NGO'), ngoDonationController.updateDonationStatus);
 
 // Fixed /ngo/dashboard route
-app.get("/ngo/dashboard", async (req, res) => {
-  if (!req.session.user) return res.redirect("/login"); 
+app.get("/ngo/dashboard", requireRole('NGO'), async (req, res) => {
+  if (!req.session.user) return res.redirect("/login");
 
   try {
     const donations = await Donation.find({ status: 'Accepted' });
     const user = await User.findById(req.session.user._id);
-    
+
     res.render("ngoDashboard", { user, donations });
   } catch (err) {
     console.error("Error fetching dashboard data:", err);
@@ -118,9 +131,18 @@ app.get("/user/donations", userController.getUserDonations);
 app.get("/signup", (req, res) => res.render("signup", { role: req.query.role || "user" }));
 app.post("/signup", async (req, res) => {
   try {
-    const { username, email, password, role } = req.body;
+    const { username, email, password, role, address } = req.body;
     if (await User.findOne({ email })) return res.send("Email already registered.");
-    await new User({ username, email, password, role: role || "user" }).save();
+
+    const newUser = new User({
+      username,
+      email,
+      password,
+      role: role || "user",
+      address: address || ""
+    });
+
+    await newUser.save();
     res.redirect("/login");
   } catch (err) {
     console.error("Signup Error:", err);
@@ -136,6 +158,8 @@ app.post("/login", async (req, res) => {
     const user = await User.findOne({ email });
     if (!user || user.password !== password) return res.send("Invalid email or password");
     req.session.user = { _id: user._id, username: user.username, email: user.email, role: user.role };
+
+    // Role-based redirect
     res.redirect("/home");
   } catch (err) {
     console.error("Login Error:", err);
@@ -153,62 +177,61 @@ app.get("/profile", async (req, res) => {
   if (!req.session.user) return res.redirect("/login");
 
   try {
-      let data = {
-          donations: [],
-          notifications: []
-      };
+    let data = {
+      donations: [],
+      notifications: []
+    };
 
-      if (req.session.user.role === "ngo") {
-          data.donations = await Donation.find();
-      } else {
-          data.donations = await Donation.find({ email: req.session.user.email });
-          data.notifications = await Notification.find({ 
-              userId: req.session.user._id 
-          }).sort({ createdAt: -1 });
-      }
+    if (req.session.user.role === "ngo") {
+      data.donations = await Donation.find();
+    } else {
+      data.donations = await Donation.find({ email: req.session.user.email });
+      data.notifications = await Notification.find({
+        userId: req.session.user._id
+      }).sort({ createdAt: -1 });
+    }
 
-      res.render("profile", { 
-          user: req.session.user, 
-          ...data 
-      });
+    res.render("profile", {
+      user: req.session.user,
+      ...data
+    });
   } catch (err) {
-      console.error(err);
-      res.send("Error fetching data");
+    console.error(err);
+    res.send("Error fetching data");
   }
 });
 
-app.get("/donate", (req, res) => req.session.user ? res.render("donate", { name: req.session.user.username }) : res.redirect("/login"));
+app.get("/donate", requireRole('user'), (req, res) => req.session.user ? res.render("donate", { name: req.session.user.username }) : res.redirect("/login"));
 
-app.post("/donate", async (req, res) => {
+app.post("/donate", requireRole('user'), async (req, res) => {
   if (!req.session || !req.session.user) return res.redirect("/login");
 
   const { foodname, meal, category, quantity, name, phoneno, district, address, deliveryOption } = req.body;
 
-  if (!deliveryOption) {
-      return res.send("Error: Delivery option is required.");
-  }
+  // Default to self_pickup if not provided
+  const finalDeliveryOption = deliveryOption || "self_pickup";
 
   const newDonation = new Donation({
-      foodname,
-      meal,
-      category,
-      quantity,
-      name,
-      phoneno,
-      district,
-      address,
-      email: req.session.user.email,
-      deliveryOption,
-      deliveryFee: deliveryOption === "paid_delivery" ? 50 : 0
+    foodname,
+    meal,
+    category,
+    quantity,
+    name,
+    phoneno,
+    district,
+    address,
+    email: req.session.user.email,
+    deliveryOption: finalDeliveryOption,
+    deliveryFee: finalDeliveryOption === "paid_delivery" ? 50 : 0
   });
 
   try {
-      await newDonation.save();
-      console.log("New donation saved:", newDonation);
-      res.redirect("/profile");
+    await newDonation.save();
+    console.log("New donation saved:", newDonation);
+    res.redirect("/profile");
   } catch (err) {
-      console.error("Error saving donation:", err);
-      res.send("Error saving donation.");
+    console.error("Error saving donation:", err);
+    res.send("Error saving donation.");
   }
 });
 
@@ -230,35 +253,35 @@ const notificationRoutes = require('./routes/notifications');
 
 app.post('/ngo/donations/update', async (req, res) => {
   try {
-      const { donationId, status, deliveryMethod, deliveryCharge } = req.body;
+    const { donationId, status, deliveryMethod, deliveryCharge } = req.body;
 
-      let updateData = { status };
+    let updateData = { status };
 
-      // Ensure the delivery method and status are properly updated
-      if (deliveryMethod === 'assigned_delivery') {
-          updateData.deliveryMethod = 'assigned_delivery';
-          updateData.deliveryCharge = deliveryCharge;
+    // Ensure the delivery method and status are properly updated
+    if (deliveryMethod === 'assigned_delivery') {
+      updateData.deliveryMethod = 'assigned_delivery';
+      updateData.deliveryCharge = deliveryCharge;
 
-          // Move the donation to the Pending Deliveries for delivery role
-          await PendingDelivery.create({
-              donationId,
-              deliveryCharge,
-              status: 'pending'
-          });
-      }
+      // Move the donation to the Pending Deliveries for delivery role
+      await PendingDelivery.create({
+        donationId,
+        deliveryCharge,
+        status: 'pending'
+      });
+    }
 
-      // Update the donation
-      await Donation.findByIdAndUpdate(donationId, updateData);
+    // Update the donation
+    await Donation.findByIdAndUpdate(donationId, updateData);
 
-      // Get updated pending deliveries count for delivery role
-      const deliveryPendingCount = await PendingDelivery.countDocuments({ status: 'pending' });
+    // Get updated pending deliveries count for delivery role
+    const deliveryPendingCount = await PendingDelivery.countDocuments({ status: 'pending' });
 
-      // Send JSON response to update UI dynamically
-      res.json({ success: true, deliveryPendingCount });
+    // Send JSON response to update UI dynamically
+    res.json({ success: true, deliveryPendingCount });
 
   } catch (err) {
-      console.error(err);
-      res.status(500).json({ success: false, error: 'Failed to update donation status.' });
+    console.error(err);
+    res.status(500).json({ success: false, error: 'Failed to update donation status.' });
   }
 });
 
@@ -308,29 +331,29 @@ app.post('/update-delivery-method/:donationId', async (req, res) => {
 
 app.post('/update-delivery/:id', async (req, res) => {
   try {
-      console.log("🔄 Updating delivery:", req.params.id);
+    console.log("🔄 Updating delivery:", req.params.id);
 
-      if (!req.session.user) {
-          return res.status(401).json({ success: false, message: "Unauthorized: Please log in first." });
-      }
+    if (!req.session.user) {
+      return res.status(401).json({ success: false, message: "Unauthorized: Please log in first." });
+    }
 
-      // Find the delivery request by ID
-      let delivery = await Delivery.findById(req.params.id);
-      if (!delivery) {
-          return res.status(404).json({ success: false, message: "Delivery not found." });
-      }
+    // Find the delivery request by ID
+    let delivery = await Delivery.findById(req.params.id);
+    if (!delivery) {
+      return res.status(404).json({ success: false, message: "Delivery not found." });
+    }
 
-      // ✅ Update the delivery status from "pending" to "accepted"
-      delivery.status = "pending"; // Move to pending section
-      delivery.assignedTo = null; // Ensure it is unassigned
-      await delivery.save();
+    // ✅ Update the delivery status from "pending" to "accepted"
+    delivery.status = "pending"; // Move to pending section
+    delivery.assignedTo = null; // Ensure it is unassigned
+    await delivery.save();
 
-      console.log("✅ Delivery updated successfully:", delivery);
-      res.json({ success: true, message: "Delivery successfully updated!" });
+    console.log("✅ Delivery updated successfully:", delivery);
+    res.json({ success: true, message: "Delivery successfully updated!" });
 
   } catch (error) {
-      console.error("❌ Error updating delivery:", error);
-      res.status(500).json({ success: false, message: "Server error. Please try again." });
+    console.error("❌ Error updating delivery:", error);
+    res.status(500).json({ success: false, message: "Server error. Please try again." });
   }
 });
 
@@ -368,13 +391,13 @@ app.post('/update-delivery/:id', async (req, res) => {
 // Require Login Middleware
 // Require Login Middleware
 // ✅ Route to show pending deliveries
-app.get('/delivery/pending', async (req, res) => {
+app.get('/delivery/pending', requireRole('DELIVERY'), async (req, res) => {
   try {
     const pendingDeliveries = await PendingDelivery.find({ status: 'pending' })
       .populate('donationId')  // Ensure you populate the related donation
       .lean();
 
-      console.log(pendingDeliveries);  // ✅ Debugging: Check if data is coming
+    console.log(pendingDeliveries);  // ✅ Debugging: Check if data is coming
 
     res.render('delivery/pending', { pendingDeliveries });
   } catch (err) {
@@ -385,7 +408,7 @@ app.get('/delivery/pending', async (req, res) => {
 
 
 // ✅ Route to show accepted deliveries
-app.get('/delivery/accepted', async (req, res) => {
+app.get('/delivery/accepted', requireRole('DELIVERY'), async (req, res) => {
   try {
     const acceptedDeliveries = await AcceptedDelivery.find()
       .populate('donationId')  // Populate food details
@@ -400,7 +423,7 @@ app.get('/delivery/accepted', async (req, res) => {
 
 // ✅ Route to accept a delivery
 // ✅ Accept Delivery API Endpoint
-app.post('/accept-delivery/:id', async (req, res) => {
+app.post('/accept-delivery/:id', requireRole('DELIVERY'), async (req, res) => {
   try {
     const deliveryId = req.params.id;
     const pendingDelivery = await PendingDelivery.findById(deliveryId).populate('donationId');
@@ -409,17 +432,17 @@ app.post('/accept-delivery/:id', async (req, res) => {
       return res.status(404).json({ success: false, message: "Pending delivery not found." });
     }
 
-   // ✅ Create Accepted Delivery Record
-const newAcceptedDelivery = new AcceptedDelivery({
-  donationId: pendingDelivery.donationId._id,
-  deliveryCharge: pendingDelivery.deliveryCharge,
-  pickupLocation: pendingDelivery.pickupLocation,
-  dropLocation: pendingDelivery.dropLocation,
-  status: "accepted_delivery",
-  foodname: pendingDelivery.donationId.foodname,   // ✅ Add food name
-  quantity: pendingDelivery.donationId.quantity,   // ✅ Add quantity
-  donorEmail: pendingDelivery.donationId.donorEmail // ✅ Add donor email
-});
+    // ✅ Create Accepted Delivery Record
+    const newAcceptedDelivery = new AcceptedDelivery({
+      donationId: pendingDelivery.donationId._id,
+      deliveryCharge: pendingDelivery.deliveryCharge,
+      pickupLocation: pendingDelivery.pickupLocation,
+      dropLocation: pendingDelivery.dropLocation,
+      status: "accepted_delivery",
+      foodname: pendingDelivery.donationId.foodname,   // ✅ Add food name
+      quantity: pendingDelivery.donationId.quantity,   // ✅ Add quantity
+      donorEmail: pendingDelivery.donationId.donorEmail // ✅ Add donor email
+    });
 
 
     await newAcceptedDelivery.save();
@@ -548,15 +571,15 @@ const newAcceptedDelivery = new AcceptedDelivery({
 
 
 
-app.get("/ngo/dashboard", async (req, res) => {
-  if (!req.session.user) return res.redirect("/login"); 
+app.get("/ngo/dashboard", requireRole('NGO'), async (req, res) => {
+  if (!req.session.user) return res.redirect("/login");
 
   try {
     // ✅ Fetch only accepted donations for the NGO dashboard
     const donations = await Donation.find({ deliveryStatus: { $in: ['pending_delivery', 'accepted_delivery'] } });
 
     const user = await User.findById(req.session.user._id);
-    
+
     res.render("ngoDashboard", { user, donations });
   } catch (err) {
     console.error("Error fetching dashboard data:", err);
@@ -565,7 +588,7 @@ app.get("/ngo/dashboard", async (req, res) => {
 });
 
 
-app.get('/delivery/accepted', async (req, res) => {
+app.get('/delivery/accepted', requireRole('DELIVERY'), async (req, res) => {
   try {
     const acceptedDeliveries = await AcceptedDelivery.find({ status: "accepted_delivery" })
       .populate('donationId')

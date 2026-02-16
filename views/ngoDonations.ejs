@@ -1,67 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NGO Donations</title>
     <link rel="stylesheet" href="/css/ngoDonations.css">
+    <link rel="stylesheet" href="/css/abc.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
+    <header>
+
+
+        
+        <div class="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+
+        <%- include("navbar"); %>
+    </header>
     <div class="donations-container">
         <h2>Welcome, <%= user.username %> 👋</h2>
-        <p><strong>Email:</strong> <%= user.email %></p>
-        <p><strong>Role:</strong> <%= user.role %></p>
+        <p><strong>Email:</strong>
+            <%= user.email %>
+        </p>
+        <p><strong>Role:</strong>
+            <%= user.role %>
+        </p>
 
-        <h3>Pending Donationss 📦</h3>
-        <% if (donations.length === 0) { %>
+        <h2><i class="fas fa-clock"></i> Pending Donations</h2>
+        <% if (donations.length===0) { %>
             <p class="no-donations">No pending donations.</p>
-        <% } else { %>
-            <table class="donations-table">
-                <thead>
-                    <tr>
-                        <th>Food Name</th>
-                        <th>Meal</th>
-                        <th>Category</th>
-                        <th>Quantity</th>
-                        <th>Donor Name</th>
-                        <th>Phone No</th>
-                        <th>Address</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% donations.forEach(donation => { %>
+            <% } else { %>
+                <table class="donations-table">
+                    <thead>
                         <tr>
-                            <td><%= donation.foodname %></td>
-                            <td><%= donation.meal %></td>
-                            <td><%= donation.category %></td>
-                            <td><%= donation.quantity %></td>
-                            <td><%= donation.name %></td>
-                            <td><%= donation.phoneno %></td>
-                            <td><%= donation.address %></td>
-                            <td>
-                                <form action="/ngo/donations/update" method="POST">
-                                    <input type="hidden" name="donationId" value="<%= donation._id %>">
-                                    <select name="status">
-                                        <option value="Pending" <%= donation.status === 'Pending' ? 'selected' : '' %>>Pending</option>
-                                        <option value="Accepted" <%= donation.status === 'Accepted' ? 'selected' : '' %>>Accept</option>
-                                    </select>
-                                    <button type="submit">Update</button>
-                                </form>
-                            </td>
-                            <td><%= new Date(donation.createdAt).toLocaleDateString() %></td>
+                            <th>Food Name</th>
+                            <th>Meal</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Donor Name</th>
+                            <th>Phone No</th>
+                            <th>Address</th>
+                            <th>Status</th>
+                            <th>Date</th>
                         </tr>
-                    <% }) %>
-                </tbody>
-            </table>
-        <% } %>
+                    </thead>
+                    <tbody>
+                        <% donations.forEach(donation=> { %>
+                            <tr>
+                                <td>
+                                    <%= donation.foodname %>
+                                </td>
+                                <td>
+                                    <%= donation.meal %>
+                                </td>
+                                <td>
+                                    <%= donation.category %>
+                                </td>
+                                <td>
+                                    <%= donation.quantity %>
+                                </td>
+                                <td>
+                                    <%= donation.name %>
+                                </td>
+                                <td>
+                                    <%= donation.phoneno %>
+                                </td>
+                                <td>
+                                    <%= donation.address %>
+                                </td>
+                                <td>
+                                    <form action="/ngo/donations/update" method="POST">
+                                        <input type="hidden" name="donationId" value="<%= donation._id %>">
+                                        <select name="status">
+                                            <option value="Pending" <%=donation.status==='Pending' ? 'selected' : '' %>
+                                                >Pending</option>
+                                            <option value="Accepted" <%=donation.status==='Accepted' ? 'selected' : ''
+                                                %>>Accept</option>
+                                        </select>
+                                        <button type="submit" class="btn">Confirm Update</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <%= new Date(donation.createdAt).toLocaleDateString() %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+                <% } %>
 
-        <div class="buttons">
-            <a href="/ngo/dashboard" class="btn dashboard">📊 Dashboard</a>
-            <a href="/logout" class="btn logout">🚪 Logout</a>
-        </div>
+                    <div class="buttons">
+                        <a href="/ngo/dashboard" class="btn dashboard">📊 Dashboard</a>
+                        <a href="/logout" class="btn logout">🚪 Logout</a>
+                    </div>
     </div>
-    
+
 </body>
+
 </html>

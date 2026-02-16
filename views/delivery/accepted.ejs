@@ -1,34 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accepted Deliveries</title>
     <link rel="stylesheet" href="/css/deliveryDashboard.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/abc.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
         /* Global Styles */
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
+            padding-top: 80px;
+            /* Prevent mixing with fixed navbar */
+            background: linear-gradient(135deg, #f0f2f5, #dfe6e9);
         }
 
         .dashboard-container {
             max-width: 90%;
-            margin: 40px auto;
-            background: white;
+            margin: 20px auto;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            border-top: 5px solid #4CAF50;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .dashboard-container:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
         h2 {
             text-align: center;
-            color: #333;
+            color: #2c3e50;
             font-size: 24px;
             margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         /* Table Styles */
@@ -38,22 +51,24 @@
             background: white;
             overflow: hidden;
             border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
 
         th {
-            background: #ff6600;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
             color: white;
             font-weight: 600;
         }
 
         tr:hover {
-            background: #ffecd6;
+            background: #f1f1f1;
             transition: 0.3s ease-in-out;
         }
 
@@ -61,9 +76,28 @@
             color: #444;
         }
 
-        /* Responsive Table */
+        /* Responsive Table and Page */
         @media (max-width: 768px) {
-            table, thead, tbody, th, td, tr {
+            body {
+                padding-top: 100px;
+            }
+
+            .dashboard-container {
+                width: 95%;
+                padding: 15px;
+                margin: 10px auto;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
                 display: block;
             }
 
@@ -90,12 +124,26 @@
             td:before {
                 content: attr(data-label);
                 font-weight: 700;
-                color: #ff6600;
+                color: #4CAF50;
             }
         }
     </style>
 </head>
+
 <body>
+
+    <header>
+
+
+        <div class="logo">Food <b style="color: #06C167;">Donate</b></div>
+        <div class="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+
+        <%- include("../navbar"); %>
+    </header>
 
     <div class="dashboard-container">
         <h2><i class="fa-solid fa-truck"></i> Accepted Deliveries</h2>
@@ -109,16 +157,22 @@
                 </tr>
             </thead>
             <tbody>
-                <% acceptedDeliveries.forEach(delivery => { %>
+                <% acceptedDeliveries.forEach(delivery=> { %>
                     <tr>
-                        <td data-label="Food Name"><%= delivery.donationId.foodname %></td>
-                        <td data-label="Quantity"><%= delivery.donationId.quantity %></td>
-                        <td data-label="Delivery Charge">₹<%= delivery.deliveryCharge %></td>
+                        <td data-label="Food Name">
+                            <%= delivery.donationId.foodname %>
+                        </td>
+                        <td data-label="Quantity">
+                            <%= delivery.donationId.quantity %>
+                        </td>
+                        <td data-label="Delivery Charge">₹<%= delivery.deliveryCharge %>
+                        </td>
                     </tr>
-                <% }); %>
+                    <% }); %>
             </tbody>
         </table>
     </div>
 
 </body>
+
 </html>

@@ -1,35 +1,50 @@
 /* General Styling */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    background: linear-gradient(135deg, #f0f2f5, #dfe6e9);
     margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    min-height: 100vh;
+    padding: 20px;
+    text-align: center;
+    color: #2c3e50;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 1000;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Container */
 .donations-container {
-    background: #fff;
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    border-top: 5px solid #4CAF50;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 1200px;
     text-align: center;
+    margin-top: 100px;
+    transition: box-shadow 0.3s ease;
+}
+
+.donations-container:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Headings */
-h2 {
-    color: #333;
+.donations-container h2 {
+    color: #2c3e50;
     margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-h3 {
-    color: #555;
+.donations-container h3 {
+    color: #4CAF50;
     margin-bottom: 20px;
 }
 
@@ -47,7 +62,7 @@ h3 {
     margin-top: 20px;
 }
 
-.donations-table th, 
+.donations-table th,
 .donations-table td {
     border: 1px solid #ddd;
     padding: 10px;
@@ -84,9 +99,17 @@ h3 {
     padding: 10px 20px;
     margin: 10px;
     text-decoration: none;
-    color: white;
+    color: #333;
     border-radius: 5px;
     transition: 0.3s;
+    background: linear-gradient(135deg, #ff9800, #f39c12);
+}
+
+.btn:hover {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+    color: #333;
 }
 
 .logout {
@@ -99,13 +122,27 @@ h3 {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .donations-table th, 
+    .donations-container {
+        width: 95%;
+        padding: 15px;
+        margin-top: 120px;
+    }
+
+    .donations-table {
+        font-size: 0.8em;
+        overflow-x: auto;
+        display: block;
+        white-space: nowrap;
+    }
+
+    .donations-table th,
     .donations-table td {
-        font-size: 14px;
         padding: 8px;
+        min-width: 100px;
     }
 
     .btn {
         padding: 8px 15px;
+        font-size: 14px;
     }
 }

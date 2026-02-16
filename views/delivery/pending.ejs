@@ -1,17 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pending Deliveries</title>
     <link rel="stylesheet" href="/css/deliveryDashboard.css">
+    <link rel="stylesheet" href="/css/abc.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding-top: 80px;
+            /* Prevent mixing with fixed navbar */
+            background: linear-gradient(135deg, #f0f2f5, #dfe6e9);
+        }
+
+        .dashboard-container {
+            max-width: 90%;
+            margin: 20px auto;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            border-top: 5px solid #4CAF50;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .dashboard-container:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Table Styles */
+        .deliveries-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .deliveries-table th,
+        .deliveries-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .deliveries-table th {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            font-weight: 600;
+        }
+
+        .deliveries-table tr:hover {
+            background: #f1f1f1;
+            transition: 0.3s ease-in-out;
+        }
+
+        .deliveries-table td {
+            color: #444;
+        }
+
+        .btn-accept {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-accept:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .accepted-btn {
+            background: #27ae60 !important;
+            color: white;
+        }
+
+        .no-deliveries {
+            text-align: center;
+            color: #777;
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        /* Responsive Table and Page */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 100px;
+            }
+
+            .dashboard-container {
+                width: 95%;
+                padding: 15px;
+                margin: 10px auto;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .deliveries-table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            thead tr {
+                display: none;
+            }
+
+            tbody tr {
+                margin-bottom: 10px;
+                display: block;
+                border: 1px solid #ddd;
+                border-radius: 12px;
+                padding: 10px;
+                background: white;
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+                font-weight: 500;
+            }
+
+            td:before {
+                content: attr(data-label);
+                font-weight: 700;
+                color: #4CAF50;
+            }
+
+            .btn-accept {
+                width: 100%;
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
+    <header>
+
+
+        <div class="logo">Food <b style="color: #06C167;">Donate</b></div>
+        <div class="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+
+        <%- include("../navbar"); %>
+    </header>
+
     <div class="dashboard-container">
-        <h2>📦 Pending Deliveriessss</h2>
-        <% if (pendingDeliveries.length > 0) { %>
-         <!-- ✅ Correct Variable -->
+        <h2><i class="fas fa-clock"></i> Pending Deliveries</h2>
+        <% if (pendingDeliveries.length> 0) { %>
+            <!-- ✅ Correct Variable -->
             <table class="deliveries-table">
                 <thead>
                     <tr>
@@ -24,46 +194,55 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% pendingDeliveries.forEach(donation => { %>
+                    <% pendingDeliveries.forEach(donation=> { %>
                         <tr>
-                            <td><%= donation.donationId?.foodname || 'Not Available' %></td>
-    <td><%= donation.donationId?.quantity || 'Not Available' %></td>
-    <td><%= donation.donationId?.pickupLocation || 'Not Available' %></td>
-<td><%= donation.donationId?.dropLocation || 'Not Available' %></td>
-    <td>₹<%= donation.deliveryCharge || '0' %></td>
-                            <td>
+                            <td data-label="Food Name">
+                                <%= donation.donationId?.foodname || 'Not Available' %>
+                            </td>
+                            <td data-label="Quantity">
+                                <%= donation.donationId?.quantity || 'Not Available' %>
+                            </td>
+                            <td data-label="Pickup Location">
+                                <%= donation.donationId?.pickupLocation || 'Not Available' %>
+                            </td>
+                            <td data-label="Drop Location">
+                                <%= donation.donationId?.dropLocation || 'Not Available' %>
+                            </td>
+                            <td data-label="Delivery Charge">₹<%= donation.deliveryCharge || '0' %>
+                            </td>
+                            <td data-label="Action">
                                 <form action="/accept-delivery/<%= donation._id %>" method="POST">
                                     <button type="submit" class="btn-accept">Accept Delivery</button>
                                 </form>
-                                
+
                             </td>
                         </tr>
                         <% }) %>
                 </tbody>
             </table>
-        <% } else { %>
-            <p class="no-deliveries">No pending deliveries at the moment.</p>
-        <% } %>
+            <% } else { %>
+                <p class="no-deliveries">No pending deliveries at the moment.</p>
+                <% } %>
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll(".btn-accept").forEach(button => {
                 button.addEventListener("click", async function (event) {
                     event.preventDefault();
-        
+
                     const deliveryId = this.closest("form").getAttribute("action").split("/").pop();
                     const buttonElement = this;
-        
+
                     try {
                         const response = await fetch(`/accept-delivery/${deliveryId}`, { method: "POST" });
                         const result = await response.json();
-        
+
                         if (result.success) {
                             // ✅ Change button text to "Accepted" instead of reloading page
                             buttonElement.textContent = "Accepted";
                             buttonElement.classList.add("accepted-btn"); // Optional: Add styling
                             buttonElement.disabled = true; // Prevent multiple clicks
-        
+
                             alert("✅ Delivery Accepted Successfully!");
                         } else {
                             alert("❌ Error accepting delivery.");
@@ -75,9 +254,10 @@
                 });
             });
         });
-        </script>
-        
-        
-    
+    </script>
+
+
+
 </body>
+
 </html>

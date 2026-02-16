@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,61 +8,169 @@
     <title>Login - Food Donate</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #28a745;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
         .form-container {
+            background-color: #ffffff;
             max-width: 400px;
-            margin: 20px auto;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 90%;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid #dee2e6;
         }
+
+        .form-container:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            position: relative;
         }
+
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            font-family: 'Poppins', sans-serif;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #495057;
         }
+
         .form-group input {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 12px 45px 12px 15px;
+            border: 2px solid #ced4da;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #495057;
             font-size: 16px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
         }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #6c757d;
+        }
+
+        .form-group i {
+            position: absolute;
+            right: 15px;
+            top: 45px;
+            color: #6c757d;
+            font-size: 18px;
+        }
+
         .submit-btn {
             width: 100%;
-            padding: 10px;
-            background: #06C167;
+            padding: 15px;
+            background: linear-gradient(135deg, #007bff, #0056b3);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
         }
+
         .submit-btn:hover {
-            background: #05a056;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .signup-link a {
+            color: #28a745;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .form-container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .form-group input {
+                padding: 10px 40px 10px 12px;
+            }
+
+            .form-group i {
+                right: 12px;
+                top: 42px;
+            }
         }
     </style>
 </head>
+
 <body>
-    <p class="logo">Food <b style="color: #06C167;">Donate</b></p>
+    <p class="logo">Food <b style="color: #ff6b6b;">Donate</b></p>
     <div class="form-container">
         <form action="/login" method="POST">
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required>
+                <i class="fas fa-envelope"></i>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
+                <i class="fas fa-lock"></i>
             </div>
             <button type="submit" class="submit-btn">Login</button>
         </form>
-        <p style="text-align: center; margin-top: 15px;">
-            Don't have an account? <a href="/signup" style="background: none; color: #06C167; padding: 0;">Sign Up</a>
-        </p>
+        <div class="signup-link">
+            Don't have an account? <a href="/signup">Sign Up</a>
+        </div>
     </div>
 </body>
+
 </html>

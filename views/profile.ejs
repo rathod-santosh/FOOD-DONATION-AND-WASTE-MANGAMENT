@@ -1,74 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Donations</title>
     <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/abc.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
+    <header>
+
+
+        <div class="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+
+        <%- include("navbar"); %>
+    </header>
     <div class="profile-container">
         <h2>Welcome, <%= user.username %> 👋</h2>
-        <p><strong>Email:</strong> <%= user.email %></p>
-        <p><strong>Role:</strong> <%= user.role %></p>
+        <p><strong>Email:</strong>
+            <%= user.email %>
+        </p>
+        <p><strong>Role:</strong>
+            <%= user.role %>
+        </p>
 
         <h3>Your Donations 📦</h3>
-        <% if (donations.length === 0) { %>
+        <% if (donations.length===0) { %>
             <p class="no-donations">You haven't made any donations yet.</p>
-        <% } else { %>
-            <table class="donations-table">
-                <thead>
-                    <tr>
-                        <th>Food Name</th>
-                        <th>Quantity</th>
-                        <th>Category</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% donations.forEach(donation => { %>
+            <% } else { %>
+                <table class="donations-table">
+                    <thead>
                         <tr>
-                            <td><%= donation.foodname %></td>
-                            <td><%= donation.quantity %></td>
-                            <td><%= donation.category %></td>
-                            <td>
-                                <% if (donation.status === "Pending") { %>
-                                    <span class="pending">Pending ⏳</span>
-                                <% } else if (donation.status === "Accepted") { %>
-                                    <span class="accepted">Accepted ✅</span>
-                                <% } else { %>
-                                    <span class="rejected">Rejected ❌</span>
-                                <% } %>
-                            </td>
-                            <td><%= new Date().toLocaleDateString() %></td>
+                            <th>Food Name</th>
+                            <th>Quantity</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Date</th>
                         </tr>
-                    <% }) %>
-                </tbody>
-            </table>
-        <% } %>
+                    </thead>
+                    <tbody>
+                        <% donations.forEach(donation=> { %>
+                            <tr>
+                                <td>
+                                    <%= donation.foodname %>
+                                </td>
+                                <td>
+                                    <%= donation.quantity %>
+                                </td>
+                                <td>
+                                    <%= donation.category %>
+                                </td>
+                                <td>
+                                    <% if (donation.status==="Pending" ) { %>
+                                        <span class="pending">Pending ⏳</span>
+                                        <% } else if (donation.status==="Accepted" ) { %>
+                                            <span class="accepted">Accepted ✅</span>
+                                            <% } else { %>
+                                                <span class="rejected">Rejected ❌</span>
+                                                <% } %>
+                                </td>
+                                <td>
+                                    <%= new Date().toLocaleDateString() %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+                <% } %>
 
-        <!-- Add this after donations table -->
-<div class="notifications-section">
-    <h3>🔔 Notifications</h3>
-    <% if (notifications.length > 0) { %>
-        <ul class="notification-list">
-            <% notifications.forEach(notif => { %>
-                <li class="notification-item">
-                    <span class="message"><%= notif.message %></span>
-                    <span class="date"><%= notif.createdAt.toLocaleString() %></span>
-                </li>
-            <% }) %>
-        </ul>
-    <% } else { %>
-        <p class="no-notifications">No new notifications</p>
-    <% } %>
-</div>
+                    <!-- Add this after donations table -->
+                    <div class="notifications-section">
+                        <h3>🔔 Notifications</h3>
+                        <% if (notifications.length> 0) { %>
+                            <ul class="notification-list">
+                                <% notifications.forEach(notif=> { %>
+                                    <li class="notification-item">
+                                        <span class="message">
+                                            <%= notif.message %>
+                                        </span>
+                                        <span class="date">
+                                            <%= notif.createdAt.toLocaleString() %>
+                                        </span>
+                                    </li>
+                                    <% }) %>
+                            </ul>
+                            <% } else { %>
+                                <p class="no-notifications">No new notifications</p>
+                                <% } %>
+                    </div>
 
-        <div class="buttons">
-            <a href="/donate" class="btn">➕ Donate More</a>
-            <a href="/logout" class="btn logout">🚪 Logout</a>
-        </div>
+                    <div class="buttons">
+                        <a href="/donate" class="btn">➕ Donate More</a>
+                        <a href="/logout" class="btn logout">🚪 Logout</a>
+                    </div>
     </div>
 </body>
+
 </html>

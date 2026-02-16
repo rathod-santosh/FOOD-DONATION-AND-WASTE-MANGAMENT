@@ -11,11 +11,25 @@ body {
     color: #2c3e50;
 }
 
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    z-index: 1000;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 /* Dashboard Container */
 .dashboard-container {
     max-width: 1200px;
-    margin: auto;
-    background: white;
+    margin: 100px auto 20px auto;
+    /* Adjusted top margin for fixed header */
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    border-top: 5px solid #3498db;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
@@ -49,17 +63,19 @@ p {
     margin-bottom: 10px;
 }
 
-/* Table */
+/* Table Styles */
 .donations-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.donations-table th, .donations-table td {
+.donations-table th,
+.donations-table td {
+    border: 1px solid #ddd;
     padding: 12px;
     text-align: center;
     font-size: 14px;
@@ -68,8 +84,7 @@ p {
 .donations-table th {
     background: linear-gradient(135deg, #3498db, #2980b9);
     color: white;
-    font-size: 16px;
-    letter-spacing: 1px;
+    font-weight: 600;
 }
 
 .donations-table tr:nth-child(even) {
@@ -97,34 +112,49 @@ p {
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
-    color: white;
+    color: #333;
     transition: 0.3s ease-in-out;
     cursor: pointer;
     border: none;
     outline: none;
     margin-top: 5px;
+    background: linear-gradient(135deg, #ff9800, #f39c12);
+}
+
+.btn:hover {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
 }
 
 /* Accept Delivery Button */
 .accept-delivery-btn {
-    background: #27ae60;
+    background: linear-gradient(135deg, #27ae60, #219150);
     padding: 8px 12px;
     font-size: 14px;
     border-radius: 5px;
     cursor: pointer;
+    color: white;
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .accept-delivery-btn:hover {
-    background: #219150;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
 }
 
 /* Logout Button */
 .btn-logout {
-    background: #e74c3c;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .btn-logout:hover {
-    background: #c0392b;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
 }
 
 /* Status Labels */
@@ -164,7 +194,7 @@ p {
     margin: 5px 0;
 }
 
-.update-form select, 
+.update-form select,
 .update-form input {
     padding: 8px;
     width: 90%;
@@ -185,7 +215,8 @@ p {
         padding: 15px;
     }
 
-    .donations-table th, .donations-table td {
+    .donations-table th,
+    .donations-table td {
         padding: 8px;
         font-size: 12px;
     }
