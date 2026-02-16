@@ -622,6 +622,6 @@ app.get("/contact", (req, res) => res.render("contact", { user: req.session.user
 app.use((req, res) => res.status(404).render("404"));
 
 // Start Server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on port ${PORT}`);
 });
