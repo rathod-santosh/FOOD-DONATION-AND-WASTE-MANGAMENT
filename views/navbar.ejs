@@ -31,7 +31,7 @@
   .nav-bar ul {
     display: flex;
     justify-content: flex-end;
-    gap: 20px;
+    gap: 5px;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -40,28 +40,72 @@
   .nav-bar li {
     display: inline-block;
   }
+
+  .nav-bar a {
+    font-size: 12px;
+    padding: 3px 8px;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .hamburger {
+    display: none;
+    cursor: pointer;
+  }
+
+  .hamburger .line {
+    width: 25px;
+    height: 3px;
+    background: #333;
+    margin: 5px 0;
+    transition: 0.3s;
+  }
+
+  @media (max-width: 768px) {
+    .hamburger {
+      display: block;
+    }
+
+    .nav-bar ul {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      width: 200px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      padding: 10px 0;
+    }
+
+    .nav-bar ul.show {
+      display: flex;
+    }
+
+    .nav-bar li {
+      margin: 10px 0;
+    }
+  }
 </style>
 
 
 <nav class="nav-bar">
 
-  <div class="logo"><img src="/img/logo.png"><span style="color: #4CAF50;">Food</span> <b
-      style="color: #9C27B0;">Donate</b></div>
+  <div class="logo"><img src="/img/logo.png"> <b style="color: #9C27B0;">Food Donate</b></div>
   <ul>
     <li><a href="/home">Home</a></li>
     <li><a href="/about">About</a></li>
     <li><a href="/contact">Contact</a></li>
 
     <% if (user) { %>
-      <script>console.log("User Role in Navbar:", "<%= user.role %>");</script>
 
       <% if (user.role==='NGO' ) { %>
         <li><a href="/ngo/donations">Donations</a></li>
         <li><a href="/ngo/dashboard">Dashboard</a></li>
 
         <% } else if (user.role==='DELIVERY' ) { %>
-          <li><a href="/delivery/pending">📦 Pending Deliveries</a></li>
-          <li><a href="/delivery/accepted">✅ Accepted Deliveries</a></li>
+          <li><a href="/delivery/pending"> Pending Deliveries</a></li>
+          <li><a href="/delivery/accepted">Accepted Deliveries</a></li>
 
           <% } else { %>
             <li><a href="/profile">Profile</a></li>
@@ -76,7 +120,22 @@
 
 
   </ul>
+  <div class="hamburger">
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+  </div>
 </nav>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const hamburger = document.querySelector('.hamburger');
+    const navUl = document.querySelector('.nav-bar ul');
+
+    hamburger.addEventListener('click', function () {
+      navUl.classList.toggle('show');
+    });
+  });
+</script>
 
 <!-- end -->

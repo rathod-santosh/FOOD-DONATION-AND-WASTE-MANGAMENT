@@ -18,7 +18,7 @@
     <header>
 
 
-       
+
         <div class="hamburger">
             <div class="line"></div>
             <div class="line"></div>
@@ -168,12 +168,16 @@
                 form.addEventListener('submit', async function (event) {
                     event.preventDefault();
 
+                    console.log('Form submitted for donation:', this.dataset.id);
+
                     const formData = new FormData(this);
                     const donationId = this.dataset.id;
                     const deliveryMethod = formData.get('deliveryMethod');
                     const deliveryCharge = formData.get('deliveryCharge');
                     const pickupLocation = formData.get('pickupLocation');
                     const dropLocation = formData.get('dropLocation');
+
+                    console.log('Sending data:', { deliveryMethod, deliveryCharge, pickupLocation, dropLocation });
 
                     // Client-side validation
                     if (!deliveryMethod) {
@@ -191,6 +195,11 @@
                         return;
                     }
 
+                    // Disable button and show loading
+                    const button = this.querySelector('button');
+                    button.disabled = true;
+                    button.textContent = 'Updating...';
+
                     try {
                         const response = await fetch(`/update-delivery-method/${donationId}`, {
                             method: 'POST',
@@ -203,7 +212,7 @@
                         const result = await response.json();
 
                         if (result.success) {
-                            // ✅ Update UI dynamically
+                            // Update UI dynamically
                             const row = this.closest('tr');
 
                             // Update the delivery charge, pickup location, and drop location in the table
@@ -212,24 +221,26 @@
                             row.querySelector('td:nth-child(9)').textContent =
                                 deliveryMethod === 'assigned_delivery' ? `₹${deliveryCharge}` : 'N/A'; // Delivery Charge
 
-                            // ✅ Update Action column (Status → Pending)
+                            // Update Action column (Status → Pending)
                             const actionColumn = row.querySelector('td:nth-child(10)'); // Adjust column index if needed
                             actionColumn.innerHTML = '<span class="status pending">Pending</span>';
 
-
                             // Show success feedback
-                            alert('Delivery details updated successfully! ✅');
+                            alert('Delivery details updated successfully! ');
                         } else {
-                            alert('Error updating delivery method! ❌');
+                            alert('Error updating delivery method! ');
                         }
                     } catch (error) {
                         console.error('Error:', error);
                         alert('Server error! Please try again.');
+                    } finally {
+                        // Re-enable button
+                        button.disabled = false;
+                        button.textContent = 'Update';
                     }
                 });
             });
         });
-
 
 
         // document.addEventListener("DOMContentLoaded", function () {

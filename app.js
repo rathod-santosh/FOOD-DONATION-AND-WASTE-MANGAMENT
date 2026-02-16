@@ -227,7 +227,6 @@ app.post("/donate", requireRole('user'), async (req, res) => {
 
   try {
     await newDonation.save();
-    console.log("New donation saved:", newDonation);
     res.redirect("/profile");
   } catch (err) {
     console.error("Error saving donation:", err);
@@ -291,9 +290,6 @@ app.post('/update-delivery-method/:donationId', async (req, res) => {
     const { donationId } = req.params;
     const { deliveryMethod, deliveryCharge, pickupLocation, dropLocation } = req.body;
 
-    // ✅ Debug: Log received data
-    console.log("📌 Received Data from Frontend:", { deliveryMethod, deliveryCharge, pickupLocation, dropLocation });
-
     // ✅ Check if required fields are provided
     if (deliveryMethod === 'assigned_delivery' && (!pickupLocation || !dropLocation)) {
       console.error("❌ Missing Pickup or Drop Location in Request");
@@ -305,7 +301,8 @@ app.post('/update-delivery-method/:donationId', async (req, res) => {
       deliveryMethod,
       deliveryCharge: deliveryMethod === 'assigned_delivery' ? deliveryCharge : null,
       pickupLocation: deliveryMethod === 'assigned_delivery' ? pickupLocation : null,
-      dropLocation: deliveryMethod === 'assigned_delivery' ? dropLocation : null
+      dropLocation: deliveryMethod === 'assigned_delivery' ? dropLocation : null,
+      deliveryStatus: deliveryMethod === 'assigned_delivery' ? 'pending_delivery' : 'not_assigned'
     });
 
     // ✅ Ensure PendingDelivery gets correct pickup & drop locations
@@ -317,8 +314,6 @@ app.post('/update-delivery-method/:donationId', async (req, res) => {
         dropLocation,
         status: 'pending'
       });
-
-      console.log("✅ New Pending Delivery Created:", newPendingDelivery);
     }
 
     res.json({ success: true, message: 'Delivery method updated successfully!', pickupLocation, dropLocation, deliveryCharge });
@@ -331,8 +326,6 @@ app.post('/update-delivery-method/:donationId', async (req, res) => {
 
 app.post('/update-delivery/:id', async (req, res) => {
   try {
-    console.log("🔄 Updating delivery:", req.params.id);
-
     if (!req.session.user) {
       return res.status(401).json({ success: false, message: "Unauthorized: Please log in first." });
     }
@@ -348,7 +341,6 @@ app.post('/update-delivery/:id', async (req, res) => {
     delivery.assignedTo = null; // Ensure it is unassigned
     await delivery.save();
 
-    console.log("✅ Delivery updated successfully:", delivery);
     res.json({ success: true, message: "Delivery successfully updated!" });
 
   } catch (error) {
@@ -397,8 +389,6 @@ app.get('/delivery/pending', requireRole('DELIVERY'), async (req, res) => {
       .populate('donationId')  // Ensure you populate the related donation
       .lean();
 
-    console.log(pendingDeliveries);  // ✅ Debugging: Check if data is coming
-
     res.render('delivery/pending', { pendingDeliveries });
   } catch (err) {
     console.error("Error fetching pending deliveries:", err);
@@ -429,6 +419,7 @@ app.post('/accept-delivery/:id', requireRole('DELIVERY'), async (req, res) => {
     const pendingDelivery = await PendingDelivery.findById(deliveryId).populate('donationId');
 
     if (!pendingDelivery) {
+      console.error("❌ No PendingDelivery found for ID:", deliveryId);
       return res.status(404).json({ success: false, message: "Pending delivery not found." });
     }
 
@@ -554,16 +545,14 @@ app.post('/accept-delivery/:id', requireRole('DELIVERY'), async (req, res) => {
 
     // ✅ Send both emails asynchronously
     await transporter.sendMail(ngoMailOptions);
-    console.log("✅ Email sent to NGO:", ngoEmail);
 
     await transporter.sendMail(donorMailOptions);
-    console.log("✅ Email sent to Donor:", donorEmail);
 
-    res.json({ success: true, message: "Delivery accepted successfully!", deliveryId });
+    res.redirect('/delivery/pending');
 
   } catch (err) {
-    // console.error("❌ Error accepting delivery:", err);
-    // res.status(500).json({ success: false, message: "Error accepting delivery." });
+    console.error("❌ Error accepting delivery:", err);
+    res.redirect('/delivery/pending');
   }
 });
 
@@ -575,8 +564,8 @@ app.get("/ngo/dashboard", requireRole('NGO'), async (req, res) => {
   if (!req.session.user) return res.redirect("/login");
 
   try {
-    // ✅ Fetch only accepted donations for the NGO dashboard
-    const donations = await Donation.find({ deliveryStatus: { $in: ['pending_delivery', 'accepted_delivery'] } });
+    // ✅ Fetch accepted donations not yet picked up by delivery
+    const donations = await Donation.find({ status: 'Accepted', deliveryStatus: { $ne: 'accepted_delivery' } });
 
     const user = await User.findById(req.session.user._id);
 
@@ -593,8 +582,6 @@ app.get('/delivery/accepted', requireRole('DELIVERY'), async (req, res) => {
     const acceptedDeliveries = await AcceptedDelivery.find({ status: "accepted_delivery" })
       .populate('donationId')
       .lean();
-
-    console.log("📌 All Accepted Deliveries:", acceptedDeliveries); // 🔹 Debugging Line
 
     res.render('delivery/accepted', { acceptedDeliveries });
   } catch (err) {

@@ -168,7 +168,7 @@
     <header>
 
 
-        <div class="logo">Food <b style="color: #06C167;">Donate</b></div>
+
         <div class="hamburger">
             <div class="line"></div>
             <div class="line"></div>
@@ -179,7 +179,7 @@
     </header>
 
     <div class="dashboard-container">
-        <h2><i class="fas fa-clock"></i> Pending Deliveries</h2>
+        <h2>Pending Deliveries</h2>
         <% if (pendingDeliveries.length> 0) { %>
             <!-- ✅ Correct Variable -->
             <table class="deliveries-table">
@@ -224,38 +224,6 @@
                 <p class="no-deliveries">No pending deliveries at the moment.</p>
                 <% } %>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".btn-accept").forEach(button => {
-                button.addEventListener("click", async function (event) {
-                    event.preventDefault();
-
-                    const deliveryId = this.closest("form").getAttribute("action").split("/").pop();
-                    const buttonElement = this;
-
-                    try {
-                        const response = await fetch(`/accept-delivery/${deliveryId}`, { method: "POST" });
-                        const result = await response.json();
-
-                        if (result.success) {
-                            // ✅ Change button text to "Accepted" instead of reloading page
-                            buttonElement.textContent = "Accepted";
-                            buttonElement.classList.add("accepted-btn"); // Optional: Add styling
-                            buttonElement.disabled = true; // Prevent multiple clicks
-
-                            alert("✅ Delivery Accepted Successfully!");
-                        } else {
-                            alert("❌ Error accepting delivery.");
-                        }
-                    } catch (error) {
-                        console.error("❌ Server error:", error);
-                        alert("❌ Server error! Try again.");
-                    }
-                });
-            });
-        });
-    </script>
-
 
 
 </body>
