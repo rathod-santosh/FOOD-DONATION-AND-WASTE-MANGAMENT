@@ -85,6 +85,7 @@ exports.updateDonationStatus = async (req, res) => {
                 }
 
                 // ✅ Send an email notification to the donor
+                console.log("Sending email to donor: " + donation.email);
                 const mailOptions = {
                     from: `"Food Donation Team" <${process.env.EMAIL_USER}>`,
                     to: donation.email,

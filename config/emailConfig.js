@@ -2,10 +2,11 @@ require('dotenv').config(); // Add this at the top
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: 'smtp.sendgrid.net',
+    port: 587,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: 'apikey',
+        pass: process.env.SENDGRID_API_KEY
     },
     tls: {
         rejectUnauthorized: false
@@ -15,7 +16,7 @@ const transporter = nodemailer.createTransport({
 // Verify connection configuration
 transporter.verify((error) => {
     if (error) {
-        console.error("❌ Email transporter verification failed:", error);
+        console.error(" Email transporter verification failed:", error);
     } else {
         console.log("✅ Email transporter ready");
     }
