@@ -150,6 +150,33 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+// Contact form route
+app.post('/contact', async (req, res) => {
+  const { name, email, message } = req.body;
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: 'santoshrathod07111@gmail.com',
+    subject: 'New Contact Form Submission',
+    html: `
+      <h2>New Contact Message</h2>
+      <p><strong>Name:</strong> ${name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Message:</strong> ${message}</p>
+    `
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    req.flash('success', 'Thank you for your inquiry! Your message has been successfully sent to our Food Donation support team.');
+    res.redirect('/contact');
+  } catch (err) {
+    console.error('Error sending email:', err);
+    req.flash('error', 'Error sending message. Please try again later.');
+    res.redirect('/contact');
+  }
+});
+
 // Login Route
 app.get("/login", (req, res) => res.render("login"));
 app.post("/login", async (req, res) => {
