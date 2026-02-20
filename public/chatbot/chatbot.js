@@ -22,22 +22,32 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Function to get bot response
-  function getBotResponse(userMessage) {
-    const lowerMessage = userMessage.toLowerCase();
-    for (const key in responses) {
-      if (lowerMessage.includes(key)) {
-        return responses[key];
-      }
+  async function getBotResponse(userMessage) {
+    console.log('Chatbot: Sending message to backend:', userMessage);
+    try {
+      const response = await fetch('/chatbot', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ question: userMessage }),
+      });
+      console.log('Chatbot: Fetch response status:', response.status);
+      const data = await response.json();
+      console.log('Chatbot: Received answer:', data.answer);
+      return data.answer;
+    } catch (error) {
+      console.error('Chatbot: Error fetching response:', error);
+      return "Sorry, I'm having trouble connecting right now. Please try again later.";
     }
-    return responses["default"];
   }
 
   // Event listener for send button
-  sendButton.addEventListener("click", function () {
+  sendButton.addEventListener("click", async function () {
     const message = userInput.value.trim();
     if (message) {
       addMessage(message, "user");
-      const response = getBotResponse(message);
+      const response = await getBotResponse(message);
       setTimeout(() => addMessage(response, "bot"), 500); // Delay for natural feel
       userInput.value = "";
     }

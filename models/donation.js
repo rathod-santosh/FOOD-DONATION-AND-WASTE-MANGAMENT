@@ -12,19 +12,25 @@ const DonationSchema = new mongoose.Schema({
     email: { type: String, required: true },
 
     pickupLocation: { type: String },
-    dropLocation: { type: String},
+    dropLocation: { type: String },
 
-    status: { 
-        type: String, 
-        enum: ["Pending", "Accepted", "Collected", "Delivered"], 
-        default: "Pending" 
-    }, 
+    acceptedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: null
+    },
 
-    deliveryStatus: {  
+    status: {
+        type: String,
+        enum: ["Pending", "Accepted", "Collected", "Delivered"],
+        default: "Pending"
+    },
+
+    deliveryStatus: {
         type: String,
         enum: ["not_assigned", "pending_delivery", "accepted_delivery", "in_transit", "delivered"],
         default: "not_assigned"
-    },  
+    },
 
     deliveryMethod: {
         type: String,
@@ -37,7 +43,7 @@ const DonationSchema = new mongoose.Schema({
     ngo: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'NGO',
-        required: function() {
+        required: function () {
             return this.deliveryMethod === 'assigned_delivery';
         }
     },

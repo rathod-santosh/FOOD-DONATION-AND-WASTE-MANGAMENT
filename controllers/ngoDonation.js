@@ -7,16 +7,16 @@ const transporter = require("../config/emailConfig");
 
 // Controller to view donations for the NGO
 module.exports.viewDonations = (req, res) => {
-  // You can query the donations from the database
-  Donation.find()
-    .then((donations) => {
-      // Render the donations view, passing the donations data
-      res.render('ngoDonations', { donations });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send('Server Error');
-    });
+    // You can query the donations from the database
+    Donation.find()
+        .then((donations) => {
+            // Render the donations view, passing the donations data
+            res.render('ngoDonations', { donations });
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).send('Server Error');
+        });
 };
 
 
@@ -61,6 +61,9 @@ exports.updateDonationStatus = async (req, res) => {
         // ✅ Handle "Accepted" status updates
         if (status === "Accepted") {
             const acceptingUser = req.session.user; // ✅ Ensure user session exists
+
+            // ✅ Set acceptedBy to the NGO's user ID
+            donation.acceptedBy = acceptingUser._id;
 
             // ✅ Add notification to donation
             donation.notifications.push({
@@ -150,16 +153,16 @@ exports.updateDonationStatus = async (req, res) => {
 // Display only "Accepted" donations on NGO Dashboard
 // controllers/ngoDonation.js
 exports.getAcceptedDonations = async (req, res) => {
-  try {
-    const donations = await Donation.find({ 
-      status: 'accepted',
-      ngo: req.session.user._id 
-    });
-    res.render('ngoDashboard', { user: req.session.user, donations });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Server Error');
-  }
+    try {
+        const donations = await Donation.find({
+            status: 'accepted',
+            ngo: req.session.user._id
+        });
+        res.render('ngoDashboard', { user: req.session.user, donations });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
 };
 
 

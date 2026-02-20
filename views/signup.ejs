@@ -8,56 +8,138 @@
     <title>Sign Up - Food Donate</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
-        .form-container {
-            max-width: 400px;
-            margin: 20px auto;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .logo img {
+            width: 50px;
+            height: auto;
+        }
+
+        .container {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            margin: 40px auto 30px;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            position: relative;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            font-family: 'Poppins', sans-serif;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+            font-size: 14px;
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
             font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #06C167;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(6, 193, 103, 0.1);
+            outline: none;
+        }
+
+        .form-group i {
+            position: absolute;
+            right: 15px;
+            top: 45px;
+            color: #999;
         }
 
         .submit-btn {
             width: 100%;
-            padding: 10px;
-            background: #06C167;
+            padding: 15px;
+            background: linear-gradient(135deg, #06C167 0%, #05a056 100%);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 10px;
         }
 
         .submit-btn:hover {
-            background: #05a056;
+            opacity: 0.9;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .login-link a {
+            color: #06C167;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 80px 15px 30px;
+                padding: 20px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <p class="logo">Food <b style="color: #06C167;">Donate</b></p>
-    <div class="form-container">
+
+    <div class="logo"><img src="/img/logo.png" alt="Food Donate"></div>
+
+    <div class="container">
         <form action="/signup" method="POST">
             <div class="form-group">
-                <label for="role">Role</label>
+                <label for="role"><i class="fas fa-user-tag"></i> Role</label>
                 <select id="role" name="role" required>
                     <option value="user" <%=role==='user' ? 'selected' : '' %>>Donor</option>
                     <option value="NGO" <%=role==='NGO' ? 'selected' : '' %>>NGO</option>
@@ -65,42 +147,47 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="username"><i class="fas fa-user"></i> Username</label>
                 <input type="text" id="username" name="username" required>
+                <i class="fas fa-user"></i>
             </div>
 
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email"><i class="fas fa-envelope"></i> Email</label>
                 <input type="email" id="email" name="email" required>
+                <i class="fas fa-envelope"></i>
             </div>
 
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password"><i class="fas fa-lock"></i> Password</label>
                 <input type="password" id="password" name="password" required>
+                <i class="fas fa-lock"></i>
             </div>
             <div class="form-group" id="addressGroup" style="display: none;">
-                <label for="address">Address (Required for NGO)</label>
+                <label for="address"><i class="fas fa-map-marker-alt"></i> Address (Required for NGO)</label>
                 <input type="text" id="address" name="address">
+                <i class="fas fa-map-marker-alt"></i>
             </div>
-            <button type="submit" class="submit-btn">Sign Up</button>
+            <button type="submit" class="submit-btn"><i class="fas fa-user-plus"></i> Sign Up</button>
         </form>
-        <script>
-            document.getElementById('role').addEventListener('change', function () {
-                const addressGroup = document.getElementById('addressGroup');
-                const addressInput = document.getElementById('address');
-                if (this.value === 'NGO') {
-                    addressGroup.style.display = 'block';
-                    addressInput.required = true;
-                } else {
-                    addressGroup.style.display = 'none';
-                    addressInput.required = false;
-                }
-            });
-        </script>
-        <p style="text-align: center; margin-top: 15px;">
-            Already have an account? <a href="/login" style="background: none; color: #06C167; padding: 0;">Login</a>
-        </p>
+        <div class="login-link">
+            Already have an account? <a href="/login">Login</a>
+        </div>
     </div>
+
+    <script>
+        document.getElementById('role').addEventListener('change', function () {
+            const addressGroup = document.getElementById('addressGroup');
+            const addressInput = document.getElementById('address');
+            if (this.value === 'NGO') {
+                addressGroup.style.display = 'block';
+                addressInput.required = true;
+            } else {
+                addressGroup.style.display = 'none';
+                addressInput.required = false;
+            }
+        });
+    </script>
 </body>
 
 </html>
