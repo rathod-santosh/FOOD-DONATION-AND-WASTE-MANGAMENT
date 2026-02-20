@@ -397,11 +397,11 @@ app.get('/delivery/pending', requireRole('DELIVERY'), async (req, res) => {
 });
 
 
-// ✅ Route to show accepted deliveries
+// Route to show accepted deliveries
 app.get('/delivery/accepted', requireRole('DELIVERY'), async (req, res) => {
   try {
-    const acceptedDeliveries = await AcceptedDelivery.find()
-      .populate('donationId')  // Populate food details
+    const acceptedDeliveries = await AcceptedDelivery.find({ userId: new mongoose.Types.ObjectId(req.session.user._id) })
+      .populate('donationId')
       .lean();
 
     res.render('delivery/accepted', { acceptedDeliveries });
@@ -426,6 +426,7 @@ app.post('/accept-delivery/:id', requireRole('DELIVERY'), async (req, res) => {
     // ✅ Create Accepted Delivery Record
     const newAcceptedDelivery = new AcceptedDelivery({
       donationId: pendingDelivery.donationId._id,
+      userId: req.session.user._id,
       deliveryCharge: pendingDelivery.deliveryCharge,
       pickupLocation: pendingDelivery.pickupLocation,
       dropLocation: pendingDelivery.dropLocation,
@@ -575,27 +576,6 @@ app.get("/ngo/dashboard", requireRole('NGO'), async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-
-
-app.get('/delivery/accepted', requireRole('DELIVERY'), async (req, res) => {
-  try {
-    const acceptedDeliveries = await AcceptedDelivery.find({ status: "accepted_delivery" })
-      .populate('donationId')
-      .lean();
-
-    res.render('delivery/accepted', { acceptedDeliveries });
-  } catch (err) {
-    console.error("Error fetching accepted deliveries:", err);
-    res.status(500).send("Error fetching accepted deliveries.");
-  }
-});
-
-
-
-
-
-
-
 
 
 
